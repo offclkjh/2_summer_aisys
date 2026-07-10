@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data and experiment logs
+data/
+runs/
+wandb/
+
+# Model files
+*.pt
+*.pth
+*.onnx
+
+# Editor files
+.vscode/
