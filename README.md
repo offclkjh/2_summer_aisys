@@ -23,4 +23,5 @@ Learn the basic workflow of AI systems:
 
 | Week | Topic | Status |
 |---|---|---|
-| 1 | Linux, Git, Python setup | In progress |
+| 1 | Linux, Git, Python setup | Done |
+| 2 | basic pytorch -> MLP vs CNN | Done |
