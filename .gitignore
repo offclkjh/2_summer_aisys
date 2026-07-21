@@ -24,3 +24,6 @@ wandb/
 
 # Editor files
 .vscode/
+
+# password
+.pw
