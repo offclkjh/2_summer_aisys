@@ -27,3 +27,6 @@ wandb/
 
 # password
 .pw
+
+checkpoints/
+outputs/
