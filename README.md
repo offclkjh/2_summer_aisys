@@ -37,7 +37,20 @@ Learn the basic workflow of AI systems:
 - Pattern Recognition and Machine Learning
     borrow from library
 
+## devices
+- desktop (bonga)
+    - SSH server
+    - CPU: Intel Core i5-14400F
+        - 10 Cores (6 Performance + 4 Efficient)
+        - 16 Threads
+    - GPU: NVIDIA GeForce RTX 5060 Ti
+        - 8 GB VRAM
+    - Memory: 32GB DDR5
 
+- laptop (jachuibang)
+    - SSH client
+
+- SSH access by Tailscale (Windows)
 
 ## Progress
 
@@ -45,3 +58,4 @@ Learn the basic workflow of AI systems:
 |---|---|---|
 | 1 | Linux, Git, Python setup | Done |
 | 2 | basic pytorch -> MLP vs CNN | Done |
+| 2 | MLAPP (Kevin P. Murphy) study & practices | Done |
