@@ -1,0 +1,365 @@
+version = 2
+textbook = "Machine Learning: A Probabilistic Perspective (2012)"
+session_minutes = 120
+policy = "Topics and prerequisites are authoritative here. Detailed problems are released phase by phase after learner testing."
+
+[[sessions]]
+id = "S01"
+phase = "A"
+title = "확률모형의 객체와 shape"
+status = "ready"
+depends_on = []
+required_concepts = ["coding.python_list", "coding.python_scalar", "coding.python_function", "coding.python_condition_exception"]
+taught_here = ["model.observation_parameter_roles", "coding.numpy_array", "coding.array_shape", "coding.array_dtype", "coding.numpy_indexing", "coding.numpy_validation"]
+
+[[sessions]]
+id = "S02"
+phase = "A"
+title = "Joint·marginal·conditional·Bayes"
+status = "planned"
+depends_on = ["S01"]
+required_concepts = ["math.finite_sum", "coding.array_shape", "coding.numpy_indexing"]
+taught_here = ["prob.joint_marginal_conditional", "prob.bayes_rule", "coding.numpy_axis"]
+
+[[sessions]]
+id = "S03"
+phase = "A"
+title = "기대값·분산·공분산"
+status = "planned"
+depends_on = ["S02"]
+required_concepts = ["math.finite_sum", "prob.joint_marginal_conditional", "coding.numpy_axis"]
+taught_here = ["prob.expectation", "prob.variance", "prob.covariance"]
+
+[[sessions]]
+id = "S04"
+phase = "A"
+title = "정보량·entropy·cross-entropy·KL"
+status = "planned"
+depends_on = ["S02", "S03"]
+required_concepts = ["math.logarithm", "prob.expectation", "prob.joint_marginal_conditional"]
+taught_here = ["info.entropy", "info.cross_entropy", "info.kl_divergence"]
+
+[[sessions]]
+id = "S05"
+phase = "B"
+title = "Bernoulli·Binomial"
+status = "planned"
+depends_on = ["S02", "S03"]
+required_concepts = ["math.logarithm", "prob.expectation", "prob.bayes_rule", "coding.numpy_array"]
+taught_here = ["dist.bernoulli", "dist.binomial", "stat.likelihood", "stat.mle"]
+
+[[sessions]]
+id = "S06"
+phase = "B"
+title = "Categorical·Multinomial"
+status = "planned"
+depends_on = ["S05"]
+required_concepts = ["dist.bernoulli", "stat.likelihood", "coding.numpy_indexing"]
+taught_here = ["dist.categorical", "dist.multinomial", "coding.one_hot"]
+
+[[sessions]]
+id = "S07"
+phase = "B"
+title = "Categorical 생성분류와 zero-count 문제"
+status = "planned"
+depends_on = ["S02", "S06"]
+required_concepts = ["prob.bayes_rule", "dist.categorical", "stat.likelihood"]
+taught_here = ["model.generative_classifier", "numeric.zero_count", "numeric.additive_smoothing"]
+
+[[sessions]]
+id = "S08"
+phase = "C"
+title = "1차원 Gaussian"
+status = "planned"
+depends_on = ["S03", "S05"]
+required_concepts = ["math.logarithm", "prob.expectation", "prob.variance", "stat.mle"]
+taught_here = ["dist.gaussian_1d", "loss.gaussian_nll", "loss.mse"]
+
+[[sessions]]
+id = "S09"
+phase = "C"
+title = "Vector와 covariance"
+status = "planned"
+depends_on = ["S03", "S08"]
+required_concepts = ["math.vector_matrix", "prob.covariance", "coding.numpy_axis"]
+taught_here = ["math.outer_product", "prob.covariance_matrix", "math.linear_transform"]
+
+[[sessions]]
+id = "S10"
+phase = "C"
+title = "Multivariate Gaussian 계산"
+status = "planned"
+depends_on = ["S09"]
+required_concepts = ["math.vector_matrix", "math.linear_system", "prob.covariance_matrix"]
+taught_here = ["dist.gaussian_multivariate", "dist.mahalanobis", "numeric.stable_logpdf"]
+
+[[sessions]]
+id = "S11"
+phase = "C"
+title = "Gaussian conditioning과 marginalization"
+status = "planned"
+depends_on = ["S02", "S10"]
+required_concepts = ["prob.joint_marginal_conditional", "math.linear_system", "dist.gaussian_multivariate"]
+taught_here = ["dist.gaussian_conditioning", "dist.gaussian_marginal"]
+
+[[sessions]]
+id = "S12"
+phase = "C"
+title = "Gaussian 생성분류"
+status = "planned"
+depends_on = ["S02", "S06", "S10"]
+required_concepts = ["prob.bayes_rule", "dist.categorical", "dist.gaussian_multivariate"]
+taught_here = ["model.lda", "model.qda", "numeric.logsumexp"]
+
+[[sessions]]
+id = "S13"
+phase = "D"
+title = "Bayes 구조와 conjugate update"
+status = "planned"
+depends_on = ["S05", "S06"]
+required_concepts = ["prob.bayes_rule", "dist.bernoulli", "dist.categorical", "stat.likelihood"]
+taught_here = ["bayes.prior_likelihood_posterior", "bayes.beta_bernoulli", "bayes.dirichlet_categorical"]
+
+[[sessions]]
+id = "S14"
+phase = "D"
+title = "MLE·MAP·posterior mean"
+status = "planned"
+depends_on = ["S13"]
+required_concepts = ["stat.mle", "bayes.beta_bernoulli"]
+taught_here = ["stat.map", "bayes.posterior_mean", "decision.point_estimator"]
+
+[[sessions]]
+id = "S15"
+phase = "D"
+title = "Credible interval과 prior sensitivity"
+status = "planned"
+depends_on = ["S14"]
+required_concepts = ["bayes.posterior_mean", "math.finite_sum"]
+taught_here = ["bayes.credible_interval", "bayes.prior_sensitivity"]
+
+[[sessions]]
+id = "S16"
+phase = "D"
+title = "Gaussian parameter의 Bayesian 추론"
+status = "planned"
+depends_on = ["S08", "S13"]
+required_concepts = ["dist.gaussian_1d", "bayes.prior_likelihood_posterior", "math.algebra"]
+taught_here = ["bayes.gaussian_conjugacy", "bayes.precision_weighting"]
+
+[[sessions]]
+id = "S17"
+phase = "D"
+title = "Posterior predictive"
+status = "planned"
+depends_on = ["S15", "S16"]
+required_concepts = ["bayes.credible_interval", "bayes.gaussian_conjugacy", "prob.expectation", "prob.variance"]
+taught_here = ["bayes.posterior_predictive", "prob.total_variance"]
+
+[[sessions]]
+id = "S18"
+phase = "D"
+title = "Bayesian decision과 비대칭 비용"
+status = "planned"
+depends_on = ["S17"]
+required_concepts = ["bayes.posterior_predictive", "prob.expectation"]
+taught_here = ["decision.expected_loss", "decision.bayes_action", "decision.cost_threshold"]
+
+[[sessions]]
+id = "S19"
+phase = "E"
+title = "Sampling distribution과 standard error"
+status = "planned"
+depends_on = ["S05", "S08"]
+required_concepts = ["dist.bernoulli", "dist.gaussian_1d", "prob.expectation", "prob.variance"]
+taught_here = ["freq.sampling_distribution", "freq.standard_error"]
+
+[[sessions]]
+id = "S20"
+phase = "E"
+title = "Bias·variance와 estimator risk"
+status = "planned"
+depends_on = ["S19"]
+required_concepts = ["freq.sampling_distribution", "prob.expectation", "prob.variance"]
+taught_here = ["freq.estimator_bias", "freq.estimator_variance", "freq.risk"]
+
+[[sessions]]
+id = "S21"
+phase = "E"
+title = "Confidence interval과 credible interval"
+status = "planned"
+depends_on = ["S15", "S19"]
+required_concepts = ["bayes.credible_interval", "freq.sampling_distribution", "freq.standard_error"]
+taught_here = ["freq.confidence_interval", "freq.coverage"]
+
+[[sessions]]
+id = "S22"
+phase = "E"
+title = "Paired bootstrap과 가설검정"
+status = "planned"
+depends_on = ["S20", "S21"]
+required_concepts = ["freq.risk", "freq.confidence_interval", "coding.random_sampling"]
+taught_here = ["freq.bootstrap", "freq.hypothesis_test", "freq.paired_comparison"]
+
+[[sessions]]
+id = "S23"
+phase = "E"
+title = "Split·CV와 모델 비교"
+status = "planned"
+depends_on = ["S22"]
+required_concepts = ["freq.paired_comparison", "coding.numpy_indexing"]
+taught_here = ["eval.train_validation_test", "eval.cross_validation", "eval.data_leakage"]
+
+[[sessions]]
+id = "S24"
+phase = "F"
+title = "선형회귀의 생성 가정"
+status = "planned"
+depends_on = ["S08", "S09"]
+required_concepts = ["dist.gaussian_1d", "loss.mse", "math.vector_matrix"]
+taught_here = ["model.linear_regression", "model.design_matrix"]
+
+[[sessions]]
+id = "S25"
+phase = "F"
+title = "최소제곱과 수치 안정성"
+status = "planned"
+depends_on = ["S24"]
+required_concepts = ["model.linear_regression", "math.linear_system"]
+taught_here = ["optim.least_squares", "numeric.condition_number", "numeric.lstsq"]
+
+[[sessions]]
+id = "S26"
+phase = "F"
+title = "Gradient descent와 PyTorch autograd"
+status = "planned"
+depends_on = ["S25"]
+required_concepts = ["math.derivative", "math.vector_matrix", "optim.least_squares"]
+taught_here = ["optim.gradient_descent", "coding.torch_autograd", "coding.torch_optimizer"]
+
+[[sessions]]
+id = "S27"
+phase = "F"
+title = "Basis expansion과 overfitting"
+status = "planned"
+depends_on = ["S23", "S25"]
+required_concepts = ["eval.train_validation_test", "optim.least_squares", "coding.python_function"]
+taught_here = ["model.basis_expansion", "eval.overfitting"]
+
+[[sessions]]
+id = "S28"
+phase = "F"
+title = "Ridge·MAP·Bayesian linear regression"
+status = "planned"
+depends_on = ["S14", "S16", "S25", "S27"]
+required_concepts = ["stat.map", "bayes.gaussian_conjugacy", "optim.least_squares", "eval.overfitting"]
+taught_here = ["model.ridge", "model.bayesian_linear_regression", "bayes.predictive_variance"]
+
+[[sessions]]
+id = "S29"
+phase = "F"
+title = "System identification 통합"
+status = "planned"
+depends_on = ["S23", "S28"]
+required_concepts = ["eval.train_validation_test", "model.ridge", "model.bayesian_linear_regression"]
+taught_here = ["signal.fir_identification", "eval.integrated_regression_report"]
+
+[[sessions]]
+id = "S30"
+phase = "G"
+title = "Sigmoid와 Bernoulli conditional model"
+status = "planned"
+depends_on = ["S05", "S24"]
+required_concepts = ["dist.bernoulli", "stat.likelihood", "model.linear_regression", "math.logarithm"]
+taught_here = ["model.logistic_regression", "math.sigmoid", "math.logit"]
+
+[[sessions]]
+id = "S31"
+phase = "G"
+title = "Stable binary cross-entropy"
+status = "planned"
+depends_on = ["S30"]
+required_concepts = ["model.logistic_regression", "math.logarithm"]
+taught_here = ["loss.binary_cross_entropy", "numeric.softplus"]
+
+[[sessions]]
+id = "S32"
+phase = "G"
+title = "Logistic gradient"
+status = "planned"
+depends_on = ["S26", "S31"]
+required_concepts = ["optim.gradient_descent", "coding.torch_autograd", "loss.binary_cross_entropy"]
+taught_here = ["optim.logistic_gradient", "numeric.finite_difference"]
+
+[[sessions]]
+id = "S33"
+phase = "G"
+title = "Multiclass softmax regression"
+status = "planned"
+depends_on = ["S04", "S06", "S32"]
+required_concepts = ["info.cross_entropy", "dist.categorical", "optim.logistic_gradient"]
+taught_here = ["model.softmax_regression", "numeric.log_softmax", "loss.categorical_nll"]
+
+[[sessions]]
+id = "S34"
+phase = "G"
+title = "Regularized logistic regression"
+status = "planned"
+depends_on = ["S14", "S23", "S32"]
+required_concepts = ["stat.map", "eval.train_validation_test", "optim.logistic_gradient"]
+taught_here = ["model.logistic_regularization", "stat.map_regularization"]
+
+[[sessions]]
+id = "S35"
+phase = "G"
+title = "확률 품질·calibration·cost threshold"
+status = "planned"
+depends_on = ["S17", "S18", "S23", "S34"]
+required_concepts = ["bayes.posterior_predictive", "decision.cost_threshold", "eval.train_validation_test", "model.logistic_regularization"]
+taught_here = ["eval.brier_score", "eval.calibration", "decision.operating_threshold"]
+
+[[sessions]]
+id = "S36"
+phase = "G"
+title = "Binary 신호분류 통합"
+status = "planned"
+depends_on = ["S23", "S34", "S35"]
+required_concepts = ["eval.train_validation_test", "model.logistic_regularization", "eval.calibration"]
+taught_here = ["signal.binary_classification", "eval.failure_layers"]
+
+[[sessions]]
+id = "S37"
+phase = "H"
+title = "Latent-variable model과 mixture factorization"
+status = "planned"
+depends_on = ["S02", "S06", "S10"]
+required_concepts = ["prob.bayes_rule", "dist.categorical", "dist.gaussian_multivariate"]
+taught_here = ["latent.variable", "latent.mixture_factorization", "latent.label_symmetry"]
+
+[[sessions]]
+id = "S38"
+phase = "H"
+title = "Mixture와 responsibility"
+status = "planned"
+depends_on = ["S12", "S37"]
+required_concepts = ["latent.mixture_factorization", "numeric.logsumexp"]
+taught_here = ["latent.responsibility", "latent.mixture_likelihood"]
+
+[[sessions]]
+id = "S39"
+phase = "H"
+title = "EM과 반복 추론"
+status = "planned"
+depends_on = ["S38"]
+required_concepts = ["latent.responsibility", "stat.mle"]
+taught_here = ["latent.em", "optim.alternating_updates"]
+
+[[sessions]]
+id = "S40"
+phase = "H"
+title = "전체 capstone"
+status = "planned"
+depends_on = ["S23"]
+one_of_tracks = ["S29", "S36", "S39"]
+required_concepts = ["eval.train_validation_test"]
+taught_here = ["project.probabilistic_pipeline", "project.limit_analysis"]

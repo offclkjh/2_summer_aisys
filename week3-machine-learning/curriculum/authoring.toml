@@ -1,0 +1,322 @@
+# Problem-generation contract. This file preserves scope decisions that are not
+# expressible as dependency metadata. Each session must have exactly one entry.
+
+[[sessions]]
+id = "S01"
+question = "관측 하나, 전체 데이터, 미지의 파라미터를 배열 구조와 함께 구분할 수 있는가?"
+textbook_topics = ["Ch.1 supervised learning notation", "Ch.2 random variables"]
+core_case = "네 번의 binary coin observation"
+core = "D, x_i, theta 역할; 1D NumPy shape/dtype/indexing; 입력 계약"
+exclude = "Bayes 계산, theta 추정, 센서 tensor, linear layer, PyTorch"
+
+[[sessions]]
+id = "S02"
+question = "작은 joint table에서 어느 축을 합하고 무엇으로 나누어 conditional을 만드는가?"
+textbook_topics = ["Ch.2 joint, marginal, conditional probability", "Bayes rule"]
+core_case = "true alarm state와 detector output의 2x2 joint table"
+core = "table normalization; two marginals; one conditional; Bayes posterior; NumPy axis"
+exclude = "연속분포, likelihood parameter inference, general broadcasting tricks"
+
+[[sessions]]
+id = "S03"
+question = "분포의 이론적 moment와 유한 표본 통계량을 구분할 수 있는가?"
+textbook_topics = ["Ch.2 expectation", "variance", "covariance"]
+core_case = "값이 세 개인 이산분포와 그 분포에서 얻은 고정 표본"
+core = "weighted mean/variance; sample mean/variance; 2D covariance 한 항"
+exclude = "Monte Carlo convergence study, normalization layers"
+
+[[sessions]]
+id = "S04"
+question = "entropy, cross-entropy, KL은 어떤 분포에 대한 기대값이며 서로 어떻게 연결되는가?"
+textbook_topics = ["Ch.2 information theory"]
+core_case = "세 범주의 명시된 p와 q"
+core = "H(p), H(p,q), KL(p||q) 손계산과 NumPy 정의식"
+exclude = "softmax 구현, logits 안정화, PyTorch CrossEntropyLoss"
+
+[[sessions]]
+id = "S05"
+question = "개별 Bernoulli 시행과 성공 횟수 Binomial 요약의 likelihood는 어떻게 연결되는가?"
+textbook_topics = ["Ch.3 Bernoulli distribution", "Binomial distribution", "MLE"]
+core_case = "고정된 다섯 binary packet outcomes"
+core = "PMF; likelihood와 log-likelihood; count; closed-form MLE"
+exclude = "Beta prior, optimizer, 대규모 grid sweep"
+
+[[sessions]]
+id = "S06"
+question = "categorical 관측열과 multinomial count vector의 데이터 단위가 어떻게 다른가?"
+textbook_topics = ["Ch.3 categorical distribution", "multinomial distribution"]
+core_case = "세 범주의 고정 label sequence"
+core = "label/count 변환; 두 likelihood의 parameter-dependent 부분; simplex MLE"
+exclude = "Dirichlet prior, 생성분류, one-hot 기반 신경망 loss"
+
+[[sessions]]
+id = "S07"
+question = "범주형 생성분류에서 보지 못한 category가 왜 전체 예측을 무너뜨리는가?"
+textbook_topics = ["Ch.3 discrete generative classifiers"]
+core_case = "두 class와 한 categorical feature의 작은 count table"
+core = "class prior; class-conditional likelihood; log-joint prediction; zero-count 재현; additive smoothing 규칙"
+exclude = "Dirichlet posterior, smoothing을 Bayes 정답으로 해석, naive Bayes 다중 feature"
+
+[[sessions]]
+id = "S08"
+question = "고정 분산 Gaussian NLL이 언제 MSE와 같은 최적해를 갖는가?"
+textbook_topics = ["Ch.4 univariate Gaussian", "Gaussian MLE"]
+core_case = "세 개의 scalar noise observations"
+core = "log-density; mean MLE; N versus N-1 variance 구분; fixed-variance NLL와 SSE"
+exclude = "autograd, optimizer, multivariate Gaussian"
+
+[[sessions]]
+id = "S09"
+question = "covariance matrix의 각 원소와 방향이 2D 데이터 변동을 어떻게 나타내는가?"
+textbook_topics = ["Ch.4 multivariate moments", "covariance geometry"]
+core_case = "세 점으로 이루어진 명시적 2D dataset"
+core = "centering; outer products; covariance matrix; 한 선형변환의 covariance"
+exclude = "eigendecomposition 구현, whitening pipeline"
+
+[[sessions]]
+id = "S10"
+question = "다변량 Gaussian log-density를 inverse 없이 안정적으로 계산하는가?"
+textbook_topics = ["Ch.4 multivariate Gaussian density"]
+core_case = "대각이 아닌 2x2 covariance와 두 observation"
+core = "residual; solve 기반 Mahalanobis term; slogdet; batched log-density"
+exclude = "Cholesky 알고리즘 직접 구현, 고차원 benchmark"
+
+[[sessions]]
+id = "S11"
+question = "Gaussian 일부 변수를 관측하면 나머지 평균과 불확실성이 어떻게 변하는가?"
+textbook_topics = ["Ch.4 Gaussian marginals and conditionals"]
+core_case = "두 변수 joint Gaussian에서 두 번째 변수 하나 관측"
+core = "block 의미; conditional mean/variance 손계산; slicing과 solve 구현"
+exclude = "Kalman filter, missing-data dataset"
+
+[[sessions]]
+id = "S12"
+question = "class별 covariance 가정이 Gaussian 생성분류 경계를 어떻게 바꾸는가?"
+textbook_topics = ["Ch.4 Gaussian discriminant analysis", "LDA and QDA"]
+core_case = "두 class의 1D Gaussian training set과 세 query point"
+core = "class prior/mean/variance; log-joint; posterior normalization; shared versus class-specific variance"
+exclude = "2D plotting, sklearn training pipeline, covariance regularization sweep"
+
+[[sessions]]
+id = "S13"
+question = "prior와 data count가 conjugate posterior에서 어떻게 합쳐지는가?"
+textbook_topics = ["Ch.5 Bayesian inference", "Beta-Bernoulli", "Dirichlet-categorical"]
+core_case = "고정 binary outcomes와 세 범주 count의 두 작은 표"
+core = "prior-likelihood-posterior 구조; Beta update; 같은 count 원리의 Dirichlet update"
+exclude = "credible interval, MCMC, general conjugate-exponential derivation"
+
+[[sessions]]
+id = "S14"
+question = "같은 posterior에서 MLE, MAP, posterior mean이 왜 다른 점을 선택하는가?"
+textbook_topics = ["Ch.5 point estimates", "posterior summaries"]
+core_case = "작은 Beta-Bernoulli posterior와 경계 사례"
+core = "세 estimator 손계산; 손실 관점의 의미; sample-size 비교"
+exclude = "optimizer 구현, regularization 코드, full sensitivity sweep"
+
+[[sessions]]
+id = "S15"
+question = "credible interval은 parameter에 대해 어떤 확률 문장을 허용하는가?"
+textbook_topics = ["Ch.5 posterior intervals", "prior sensitivity"]
+core_case = "두 Beta posterior의 제공된 grid approximation"
+core = "normalized CDF; equal-tail interval; interval mass; 두 prior 비교"
+exclude = "HPD 알고리즘, plotting library, confidence interval"
+
+[[sessions]]
+id = "S16"
+question = "Gaussian prior와 data precision이 posterior 평균의 가중치가 되는 이유는 무엇인가?"
+textbook_topics = ["Ch.5 Gaussian conjugate inference"]
+core_case = "known observation variance와 unknown scalar mean"
+core = "완전제곱; posterior precision/mean/variance; 1D grid 검산"
+exclude = "autograd, unknown variance conjugacy, multivariate parameter"
+
+[[sessions]]
+id = "S17"
+question = "parameter uncertainty가 새 관측의 predictive uncertainty에 어떻게 전달되는가?"
+textbook_topics = ["Ch.5 posterior predictive distribution"]
+core_case = "S16 scalar Gaussian mean model"
+core = "plug-in prediction과 posterior predictive 비교; noise/parameter variance 분해"
+exclude = "Monte Carlo sampling study, neural predictive uncertainty"
+
+[[sessions]]
+id = "S18"
+question = "posterior probability와 비대칭 비용으로 최종 행동을 어떻게 정하는가?"
+textbook_topics = ["Ch.5 Bayesian decision theory"]
+core_case = "false alarm과 miss 비용이 다른 binary alarm"
+core = "두 action의 expected loss; cost threshold; probability와 action 분리"
+exclude = "MAP regularization, ROC curve, multiclass decision"
+
+[[sessions]]
+id = "S19"
+question = "반복 표본에서 estimator의 값과 standard error는 무엇을 의미하는가?"
+textbook_topics = ["Ch.6 sampling distributions", "standard error"]
+core_case = "Bernoulli sample mean의 작은 반복표본 표"
+core = "estimator versus parameter; exact mean/variance; standard error; fixed simulation confirmation"
+exclude = "CLT 증명, bootstrap, confidence interval"
+
+[[sessions]]
+id = "S20"
+question = "unbiased estimator가 항상 최소 risk estimator가 아닌 이유는 무엇인가?"
+textbook_topics = ["Ch.6 bias", "variance", "risk"]
+core_case = "두 개의 명시된 scalar estimator sampling table"
+core = "bias; variance; squared-error risk; bias-variance decomposition"
+exclude = "model-level bias-variance, cross-validation"
+
+[[sessions]]
+id = "S21"
+question = "confidence interval과 credible interval의 확률 대상은 어떻게 다른가?"
+textbook_topics = ["Ch.6 confidence intervals", "Ch.5 credible intervals"]
+core_case = "Gaussian mean의 repeated confidence intervals와 하나의 posterior interval"
+core = "coverage experiment 해석; 두 문장의 참/거짓 분류"
+exclude = "bootstrap interval, hypothesis testing"
+
+[[sessions]]
+id = "S22"
+question = "같은 paired model differences에서 bootstrap interval과 hypothesis test가 답하는 질문은 무엇인가?"
+textbook_topics = ["Ch.6 bootstrap", "hypothesis testing"]
+core_case = "두 모델의 동일한 열 개 test-item loss differences"
+core = "paired resampling; mean-difference interval; null 질문; p-value 해석"
+exclude = "unpaired test 모음, 다중검정, 이론적 검정 catalogue"
+
+[[sessions]]
+id = "S23"
+question = "모델 선택과 최종 일반화 평가에서 데이터를 어떻게 격리하는가?"
+textbook_topics = ["Ch.6 model assessment and selection"]
+core_case = "group ID가 있는 작은 classification index table"
+core = "train/validation/test 역할; grouped split; K-fold index; paired fold comparison; leakage failure"
+exclude = "nested CV 전체 구현, hyperparameter framework"
+
+[[sessions]]
+id = "S24"
+question = "squared error 뒤의 선형·Gaussian 생성 가정은 무엇인가?"
+textbook_topics = ["Ch.7 linear regression likelihood"]
+core_case = "intercept와 feature 하나를 가진 네 observation"
+core = "design matrix; prediction shape; residual; SSE; fixed-variance Gaussian NLL"
+exclude = "least-squares solution, autograd, basis expansion"
+
+[[sessions]]
+id = "S25"
+question = "최소제곱 해를 explicit inverse 대신 어떤 수치 연산으로 구하는가?"
+textbook_topics = ["Ch.7 least squares estimation"]
+core_case = "작은 full-rank design matrix와 하나의 nearly-collinear variant"
+core = "normal equation 손계산; solve와 lstsq; condition number와 residual 비교"
+exclude = "SVD 구현, gradient descent"
+
+[[sessions]]
+id = "S26"
+question = "손으로 유도한 gradient, finite difference, autograd가 같은가?"
+textbook_topics = ["Ch.7 gradient-based optimization for regression"]
+core_case = "두 parameter linear regression의 한 update step"
+core = "SSE gradient; NumPy one-step; finite difference; PyTorch forward/backward/update 역할"
+exclude = "긴 training benchmark, adaptive optimizers"
+
+[[sessions]]
+id = "S27"
+question = "basis 표현력 증가는 train error와 validation error를 어떻게 다르게 바꾸는가?"
+textbook_topics = ["Ch.7 basis functions", "model selection"]
+core_case = "고정 1D regression data와 polynomial degree 1/3/8"
+core = "feature columns; fit/transform 분리; leakage-free scaling; degree 선택"
+exclude = "Fourier와 polynomial 동시 구현, DNN representation"
+
+[[sessions]]
+id = "S28"
+question = "ridge MAP point와 Bayesian weight posterior는 무엇을 공유하고 무엇을 잃거나 보존하는가?"
+textbook_topics = ["Ch.7 ridge regression", "Bayesian linear regression"]
+core_case = "1D weight 하나의 Gaussian prior regression"
+core = "1D ridge/MAP 손계산; scaffold된 matrix posterior mean/covariance; predictive variance"
+exclude = "general optimizer, weight-decay API, intercept penalty sweep"
+
+[[sessions]]
+id = "S29"
+question = "OLS, ridge, Bayesian regression은 하나의 noisy FIR 추정에서 어떻게 비교되는가?"
+textbook_topics = ["Ch.7 integrated linear regression application"]
+core_case = "고정 길이-3 FIR과 제공된 train/test signal"
+core = "design matrix; 세 estimator; held-out RMSE; Bayesian interval 한 개"
+exclude = "SNR sweep, PyTorch baseline, 여러 filter 길이"
+
+[[sessions]]
+id = "S30"
+question = "선형 score를 Bernoulli probability로 바꾸는 모델 가정은 무엇인가?"
+textbook_topics = ["Ch.8 binary logistic regression"]
+core_case = "feature 하나와 binary label 네 개"
+core = "logit/sigmoid 관계; logits; probability; sample likelihood"
+exclude = "stable BCE derivation, gradient training"
+
+[[sessions]]
+id = "S31"
+question = "극단 logit에서도 binary NLL을 유한하게 계산하는 식은 무엇인가?"
+textbook_topics = ["Ch.8 logistic likelihood"]
+core_case = "labels와 logits 0, 10, -10, 1000, -1000"
+core = "Bernoulli NLL의 logit 식; naive failure; softplus stable form; reduction contract"
+exclude = "optimizer, calibration"
+
+[[sessions]]
+id = "S32"
+question = "logistic NLL gradient의 p-y가 각 sample update 방향을 어떻게 정하는가?"
+textbook_topics = ["Ch.8 logistic regression optimization"]
+core_case = "두 feature binary dataset의 한 gradient step"
+core = "sample derivative; X^T(p-y); finite difference; NumPy/PyTorch one-step 비교"
+exclude = "full convergence benchmark, regularization"
+
+[[sessions]]
+id = "S33"
+question = "binary conditional model을 K-class logits와 categorical NLL로 어떻게 일반화하는가?"
+textbook_topics = ["Ch.8 multiclass logistic regression"]
+core_case = "두 samples와 세 class의 explicit logits"
+core = "stable log-softmax; integer target gather; NLL; prediction; shift invariance"
+exclude = "multiclass optimizer training, calibration"
+
+[[sessions]]
+id = "S34"
+question = "separable binary data에서 Gaussian weight prior의 MAP penalty가 weight 발산을 어떻게 제어하는가?"
+textbook_topics = ["Ch.8 regularized logistic regression", "Ch.5 MAP"]
+core_case = "작은 separable binary dataset과 두 regularization strengths"
+core = "BCE+L2 objective; gradient; intercept 제외; validation 선택"
+exclude = "multiclass regularization, PyTorch parameter groups"
+
+[[sessions]]
+id = "S35"
+question = "정확도가 같아도 probability quality와 비용 기반 행동이 왜 달라지는가?"
+textbook_topics = ["probability calibration", "Bayesian decision connection"]
+core_case = "binary predictions 두 세트와 asymmetric alarm cost"
+core = "Brier score; coarse reliability table; cost threshold; validation에서 threshold 선택"
+exclude = "ROC/PR curve catalogue, ECE 단독 최적화, multiclass calibration"
+
+[[sessions]]
+id = "S36"
+question = "binary 신호분류 실패를 feature, model, probability, decision 층으로 구분할 수 있는가?"
+textbook_topics = ["Ch.8 integrated binary logistic application"]
+core_case = "고정 synthetic sinusoid-versus-noise binary dataset"
+core = "grouped split; one feature pipeline; regularized logistic; NLL/Brier/cost; SNR error slice"
+exclude = "multiclass model, raw-waveform DNN, 여러 feature family"
+
+[[sessions]]
+id = "S37"
+question = "mixture model에서 관측 x, latent component z, parameter를 어떻게 factorize하는가?"
+textbook_topics = ["Ch.11 mixture models", "latent variables"]
+core_case = "두 component categorical prior와 1D Gaussian emissions"
+core = "p(z)p(x|z) factorization; joint table; marginal p(x); posterior p(z|x); label symmetry"
+exclude = "parameter posterior, EM update, mixture fitting"
+
+[[sessions]]
+id = "S38"
+question = "responsibility는 어떤 posterior이며 mixture likelihood를 어떻게 안정적으로 계산하는가?"
+textbook_topics = ["Ch.11 Gaussian mixtures", "responsibilities"]
+core_case = "parameter가 고정된 two-component 1D Gaussian mixture와 세 points"
+core = "component log-joint; logsumexp marginal; row-normalized responsibilities"
+exclude = "parameter fitting, covariance matrix, clustering metric"
+
+[[sessions]]
+id = "S39"
+question = "EM의 E-step과 M-step은 각각 무엇을 계산하고 갱신하는가?"
+textbook_topics = ["Ch.11 EM algorithm"]
+core_case = "two-component 1D Gaussian mixture의 한 E/M iteration"
+core = "한 step 손계산; weighted parameter update; observed likelihood trace; empty-component guard"
+exclude = "general EM proof, high-dimensional covariance, exhaustive initialization sweep"
+
+[[sessions]]
+id = "S40"
+question = "하나의 선택한 문제를 model, inference, prediction, evaluation, decision 흐름으로 일관되게 설명하는가?"
+textbook_topics = ["Ch.1-8 integration", "one completed track from Ch.7, Ch.8, or Ch.11"]
+core_case = "S29 regression, S36 binary classification, S39 mixture 중 하나만 선택"
+core = "선택 모델의 object map; independent evaluation; decision/report; 한계와 실패 원인"
+exclude = "세 트랙 동시 구현, 새로운 모델 학습, 대규모 ablation"

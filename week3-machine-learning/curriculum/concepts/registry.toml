@@ -1,0 +1,68 @@
+# Concepts that are required before their first curriculum introduction live here.
+# Concepts taught by a session are resolved automatically from curriculum.toml.
+
+[[concepts]]
+id = "coding.python_list"
+title = "Python 리스트"
+level = "read"
+card = "python_list.md"
+
+[[concepts]]
+id = "coding.python_scalar"
+title = "Python 스칼라 값"
+level = "read"
+card = "python_scalar.md"
+
+[[concepts]]
+id = "coding.python_function"
+title = "Python 함수의 입력과 반환값"
+level = "use"
+card = "python_function.md"
+
+[[concepts]]
+id = "coding.python_condition_exception"
+title = "Python 조건문과 예외"
+level = "use"
+card = "python_condition_exception.md"
+
+[[concepts]]
+id = "coding.random_sampling"
+title = "난수 표본과 seed"
+level = "use"
+card = "random_sampling.md"
+
+[[concepts]]
+id = "math.finite_sum"
+title = "유한합과 합 기호"
+level = "calculate"
+card = "finite_sum.md"
+
+[[concepts]]
+id = "math.logarithm"
+title = "로그의 곱셈·나눗셈 법칙"
+level = "calculate"
+card = "logarithm.md"
+
+[[concepts]]
+id = "math.vector_matrix"
+title = "벡터와 행렬 곱"
+level = "calculate"
+card = "vector_matrix.md"
+
+[[concepts]]
+id = "math.linear_system"
+title = "연립일차방정식과 선형계"
+level = "calculate"
+card = "linear_system.md"
+
+[[concepts]]
+id = "math.algebra"
+title = "식 전개와 완전제곱"
+level = "calculate"
+card = "algebra.md"
+
+[[concepts]]
+id = "math.derivative"
+title = "미분과 gradient"
+level = "calculate"
+card = "derivative.md"

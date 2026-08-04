@@ -1,0 +1,26 @@
+id = "S01"
+title = "확률모형의 객체와 shape"
+status = "ready"
+core_minutes = 105
+extension_minutes = 15
+depends_on = []
+required_concepts = ["coding.python_list", "coding.python_scalar", "coding.python_function", "coding.python_condition_exception"]
+taught_here = [
+  "model.observation_parameter_roles",
+  "coding.numpy_array",
+  "coding.array_shape",
+  "coding.array_dtype",
+  "coding.numpy_indexing",
+  "coding.numpy_validation",
+]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+
+[concept_anchors]
+"model.observation_parameter_roles" = "PROBLEM.md#문제에서-주어진-정보"
+"coding.numpy_array" = "PROBLEM.md#문제에서-주어진-정보"
+"coding.array_shape" = "PROBLEM.md#사용할-정의"
+"coding.array_dtype" = "PROBLEM.md#문제에서-주어진-정보"
+"coding.numpy_indexing" = "PROBLEM.md#문제에서-주어진-정보"
+"coding.numpy_validation" = "PROBLEM.md#t3-입력-계약-구현"
