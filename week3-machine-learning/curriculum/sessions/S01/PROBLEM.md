@@ -103,25 +103,18 @@ observations = np.array([1, 0, 1, 1], dtype=np.int64)
 
 ### T3. 입력 계약 구현
 
-`validate_coin_observations(observations)`를 완성한다. 검사 순서와 예외는 다음과 같다.
+`validate_coin_observations(observations)`를 완성한다. 유효한 입력은 다음 조건을 모두 만족한다.
 
-1. `np.ndarray`가 아니면 `TypeError`.
-2. 1차원 배열이 아니면 `ValueError`.
-3. 관측이 하나도 없으면 `ValueError`.
-4. 정수 dtype이 아니면 `TypeError`.
-5. `0` 또는 `1`이 아닌 값이 있으면 `ValueError`.
+- NumPy 배열이다.
+- 관측이 하나 이상인 1차원 배열이다.
+- 정수 dtype이며 모든 값이 `0` 또는 `1`이다.
 
-유효한 입력은 아무것도 반환하지 않는다.
+유효한 입력은 아무것도 반환하지 않는다. 잘못된 객체 종류나 dtype에는
+`TypeError`를, 잘못된 shape·빈 배열·허용되지 않은 값에는 `ValueError`를
+발생시킨다. 검사 순서와 NumPy 표현은 직접 정한다.
 
-이 과제에서 처음 사용하는 NumPy 검사법은 아래와 같다. 외워서 시작하는 선수지식이 아니라, 이 코드를 읽고 각 빈 조건에 적용하는 것이 이번 학습 내용이다.
-
-```python
-isinstance(observations, np.ndarray)       # NumPy 배열인지
-observations.ndim                          # 축의 수
-observations.size                          # 전체 원소 수
-np.issubdtype(observations.dtype, np.integer)  # 정수 dtype인지
-np.all((observations == 0) | (observations == 1))  # 모든 값이 0/1인지
-```
+막히면 완성 표현을 한꺼번에 찾지 말고, 현재 확인하려는 조건 하나를 정한 뒤
+튜터에게 그 조건을 조사할 NumPy 속성이나 함수에 대한 힌트만 요청한다.
 
 ### T4. 검산
 
@@ -137,13 +130,9 @@ cd week3-machine-learning/curriculum/sessions/S01
 
 ### T5. 실패 사례
 
-다음 세 입력이 각각 어떤 규칙을 위반하며 어떤 예외가 나와야 하는지 실행 전에 적고, 실행해서 확인한다.
-
-```python
-np.array([[1, 0, 1, 1]], dtype=np.int64)  # shape (1, 4)
-np.array([1.0, 0.0], dtype=np.float32)    # shape (2,)
-np.array([1, 2], dtype=np.int64)          # shape (2,)
-```
+T3의 서로 다른 규칙을 하나씩 위반하는 입력 세 개를 직접 만든다. 각 입력에
+대해 위반한 규칙과 예상 예외를 `answers.md`에 먼저 적고 실행해서 확인한다.
+세 사례가 같은 규칙만 반복해서 검사하지 않게 한다.
 
 ### T6. 설명 확인
 
