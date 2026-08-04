@@ -7,6 +7,9 @@ for basic understanding for ML(Bayesian & frequentist approaches, infomation the
 
 read & practices
 
+- [40-session practice curriculum](curriculum/README.md)
+- [MLAPP Ch.1–5 big picture](MLAPP_1_5_BIG_PICTURE.md)
+
 ## textbooks
 - Machine Learning: A Probabilistic Perspective
     library -> bought own now

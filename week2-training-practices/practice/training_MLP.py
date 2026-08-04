@@ -98,7 +98,7 @@ def train_loop(dataloader, model, loss_fn, optimizer):
         optimizer.zero_grad()
 
         if batch % 100 == 0:
-            loss, current = loss.item(), batch * batch_size + len(X)
+            loss, current = loss.item(), batch * dataloader.batch_size + len(X)
             print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
 
 def test_loop(dataloader, model, loss_fn):
@@ -127,7 +127,7 @@ def main():
     batch_size = 5
     epochs = 5
 
-    loss_Fn = nn.CrossEntropyLoss()
+    loss_fn = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
     epochs = 6
