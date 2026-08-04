@@ -92,17 +92,14 @@ observations = np.array([1, 0, 1, 1], dtype=np.int64)
 
 ### T2. 직접 확인
 
-`starter.py`의 `inspect_observations()`를 완성한다. 반환값은 다음 네 항목을 이 순서로 담은 tuple이다.
+`starter.py`의 `inspect_observations()`를 완성하여 배열의 구조와 첫 번째 관측을 조사한다. 반환값은 다음 정보를 이 순서로 담은 tuple이어야 한다.
 
-```python
-(observations.shape, observations.dtype, observations[0], observations.size)
-```
+1. 배열의 shape
+2. 원소의 dtype
+3. 첫 번째 관측값
+4. 전체 관측 개수
 
-주어진 배열에서는 정확히 다음 결과가 나와야 한다.
-
-```python
-((4,), np.dtype("int64"), np.int64(1), 4)
-```
+구체적인 반환값은 T1의 예측을 옮겨 적지 말고 직접 구현한 뒤 실행해서 확인한다.
 
 ### T3. 입력 계약 구현
 
