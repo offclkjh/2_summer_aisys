@@ -1,0 +1,20 @@
+id = "S02"
+title = "Joint·marginal·conditional·Bayes"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S01"]
+required_concepts = ["math.finite_sum", "coding.array_shape", "coding.numpy_indexing"]
+taught_here = [
+  "prob.joint_marginal_conditional",
+  "prob.bayes_rule",
+  "coding.numpy_axis",
+]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+
+[concept_anchors]
+"prob.joint_marginal_conditional" = "PROBLEM.md#사용할-정의"
+"prob.bayes_rule" = "PROBLEM.md#사용할-정의"
+"coding.numpy_axis" = "PROBLEM.md#배열의-축"

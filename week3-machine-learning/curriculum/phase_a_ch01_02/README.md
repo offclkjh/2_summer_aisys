@@ -3,7 +3,7 @@
 이 파일은 Phase 색인이다. 세션의 선수관계와 상태는 [전체 계약](../curriculum.toml)이 기준이다.
 
 - S01 확률모형의 객체와 shape — [ready 문제](../sessions/S01/PROBLEM.md)
-- S02 Joint·marginal·conditional·Bayes — planned
+- S02 Joint·marginal·conditional·Bayes — [ready 문제](../sessions/S02/PROBLEM.md)
 - S03 기대값·분산·공분산 — planned
 - S04 정보량·entropy·cross-entropy·KL — planned
 

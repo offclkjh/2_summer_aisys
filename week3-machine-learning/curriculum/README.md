@@ -47,6 +47,21 @@ v2는 다음을 분리한다.
 숨기지 않는다. 이 규칙은 도움을 거부하기 위한 것이 아니라 공개 시점을 조절하기
 위한 것이다.
 
+### 세션 학습 플로우
+
+세션은 오답을 판정하고 끝내지 않고, 학습자가 정답을 납득하고 다시 사용할 수
+있을 때까지 다음 순서로 진행한다.
+
+1. 학습자가 먼저 예측하거나 구현한다.
+2. 막힌 지점을 구체화하고 필요한 단계의 힌트를 받는다.
+3. 정답뿐 아니라 처음 생각과 달랐던 이유를 설명한다.
+4. 도움 없이 핵심을 다시 설명하거나 코드를 정리한다.
+5. 다른 입력이나 작은 변형에도 같은 개념을 적용해 본다.
+6. 새 API, 재사용할 구현 개선, MLAPP 코어만 Phase별 학습 노트에 남긴다.
+
+완료 기준은 정답을 처음부터 혼자 맞히는 것이 아니다. 튜터의 도움을 사용할 수
+있지만, 마지막에는 핵심을 자기 말과 코드로 재구성할 수 있어야 한다.
+
 ## 세션을 시작하거나 문제를 생성할 때
 
 먼저 해당 세션의 문맥을 불러온다.
@@ -79,7 +94,7 @@ python3 tools/validate_curriculum.py
 
 | Phase | 세션 | 범위 | 상세 문제 상태 |
 |---|---|---|---|
-| [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01 ready, S02–S04 planned |
+| [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01–S02 ready, S03–S04 planned |
 | [B](phase_b_ch03_discrete/README.md) | S05–S07 | 이산분포와 생성분류 | planned |
 | [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | planned |
 | [D](phase_d_ch05_bayesian/README.md) | S13–S18 | Bayesian inference와 decision | planned |
