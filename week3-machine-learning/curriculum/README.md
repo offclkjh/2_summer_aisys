@@ -94,7 +94,7 @@ python3 tools/validate_curriculum.py
 
 | Phase | 세션 | 범위 | 상세 문제 상태 |
 |---|---|---|---|
-| [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01–S02 ready, S03–S04 planned |
+| [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01–S03 ready, S04 planned |
 | [B](phase_b_ch03_discrete/README.md) | S05–S07 | 이산분포와 생성분류 | planned |
 | [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | planned |
 | [D](phase_d_ch05_bayesian/README.md) | S13–S18 | Bayesian inference와 decision | planned |
