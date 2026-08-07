@@ -5,6 +5,6 @@
 - S01 확률모형의 객체와 shape — [ready 문제](../sessions/S01/PROBLEM.md)
 - S02 Joint·marginal·conditional·Bayes — [ready 문제](../sessions/S02/PROBLEM.md)
 - S03 기대값·분산·공분산 — [ready 문제](../sessions/S03/PROBLEM.md)
-- S04 정보량·entropy·cross-entropy·KL — planned
+- S04 정보량·entropy·cross-entropy·KL — [ready 문제](../sessions/S04/PROBLEM.md)
 
 S04에서는 정보이론 정의만 다룬다. stable log-softmax와 PyTorch cross-entropy API는 S33으로 이동했다.

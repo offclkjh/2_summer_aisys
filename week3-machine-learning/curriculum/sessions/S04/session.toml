@@ -1,0 +1,16 @@
+id = "S04"
+title = "정보량·entropy·cross-entropy·KL"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S02", "S03"]
+required_concepts = ["math.logarithm", "prob.expectation", "prob.joint_marginal_conditional"]
+taught_here = ["info.entropy", "info.cross_entropy", "info.kl_divergence"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+
+[concept_anchors]
+"info.entropy" = "PROBLEM.md#사용할-정의"
+"info.cross_entropy" = "PROBLEM.md#사용할-정의"
+"info.kl_divergence" = "PROBLEM.md#사용할-정의"
