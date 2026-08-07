@@ -10,6 +10,7 @@ v2는 다음을 분리한다.
 
 - [curriculum.toml](curriculum.toml): 40개 주제, 선수 세션, 필요 개념의 유일한 기준
 - [authoring.toml](authoring.toml): 세션별 중심 질문·교재 주제·중심 사례·핵심/제외 범위
+- [NumPy 핵심 연산 가이드](NUMPY_GUIDE.md): 전 세션에서 재사용하는 배열·축·통계·선형대수·수치 연산 참조표
 - `concepts/`: 과정 밖 선수지식의 짧은 진단·복습 카드
 - `sessions/SXX/`: 실제로 풀 수 있도록 검수된 세션 문제
 - [문제 템플릿](templates/PROBLEM_TEMPLATE.md): 상세 문제의 필수 구조
