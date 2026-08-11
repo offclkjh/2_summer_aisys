@@ -2,7 +2,7 @@
 
 이 파일은 Phase 색인이다. 세션의 선수관계와 상태는 [전체 계약](../curriculum.toml)이 기준이다.
 
-- S05 Bernoulli·Binomial — planned
+- [S05 Bernoulli·Binomial](../sessions/S05/PROBLEM.md) — ready
 - S06 Categorical·Multinomial — planned
 - S07 Categorical 생성분류와 zero-count 문제 — planned
 

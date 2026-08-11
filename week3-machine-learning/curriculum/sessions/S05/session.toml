@@ -1,0 +1,17 @@
+id = "S05"
+title = "Bernoulli·Binomial"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S02", "S03"]
+required_concepts = ["math.logarithm", "prob.expectation", "prob.bayes_rule", "coding.numpy_array"]
+taught_here = ["dist.bernoulli", "dist.binomial", "stat.likelihood", "stat.mle"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+
+[concept_anchors]
+"dist.bernoulli" = "PROBLEM.md#사용할-정의"
+"dist.binomial" = "PROBLEM.md#사용할-정의"
+"stat.likelihood" = "PROBLEM.md#사용할-정의"
+"stat.mle" = "PROBLEM.md#사용할-정의"
