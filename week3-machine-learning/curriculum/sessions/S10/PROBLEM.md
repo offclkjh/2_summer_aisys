@@ -49,6 +49,10 @@ batch에서는 RHS를 `residuals.T` shape `(D,N)`로 주고 결과를 다시 tra
 - **검산 전용 API:** 추가 분포 라이브러리 없이 `test_contract.py`의
   독립 reference 계산으로 검산한다. `np.linalg.inv`/`np.linalg.det`는
   검산용으로도 권장하지 않는다.
+- **표준 검산 선택:** `np.testing.assert_allclose(covariance @ z, residual)`로
+  선형계를 먼저 검산하고, 공개된 scalar logpdf 정의식으로 최종 배열을
+  비교한다. 추가 분포 패키지 없이 재현 가능하고 `solve` 경로를 직접
+  확인할 수 있어 이 프로젝트의 표준 검산으로 사용한다.
 
 ## 과제
 ### T1. 실행 전 예측

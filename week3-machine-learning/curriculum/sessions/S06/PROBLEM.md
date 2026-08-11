@@ -54,6 +54,10 @@ one_hot[i,j] = 1 if labels[i]=j else 0
 - **검산 전용 API:** `np.eye(K)[labels]`, `np.bincount(labels,
   minlength=K)`, `np.unique(..., return_counts=True)`. one-hot/count를 한 호출로
   완성하므로 T3 직접 구현에는 쓰지 않고 T4에서만 비교한다.
+- **표준 검산 선택:** one-hot은 `np.eye(K, dtype=np.float64)[labels]`,
+  count는 `np.bincount(labels, minlength=K)`다. 둘 다 NumPy의 대표적인 vectorized
+  표현이고 결과 shape가 명확하다. `minlength=K`를 빼면 관측되지 않은
+  마지막 category가 출력에서 사라질 수 있다.
 
 ## 과제
 

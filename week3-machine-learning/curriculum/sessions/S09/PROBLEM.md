@@ -49,6 +49,9 @@ batched transformed = data @ A.T           shape (N,M)
 - **검산 전용 API:** `np.outer`, `np.cov(data, rowvar=False, bias=True)`.
   outer product/covariance 전체를 한 호출로 완성하므로 T3에서는 쓰지 않고,
   직접 구현 후 T4에서만 비교한다. `bias=True`는 분모 `N`을 뜻한다.
+- **표준 검산 선택:** outer product는 `np.outer(v, v)`, covariance는
+  `np.cov(data, rowvar=False, bias=True)`다. 행이 observation이므로 `rowvar=False`,
+  이 세션의 분모가 `N`이므로 `bias=True`를 반드시 명시한다.
 
 ## 과제
 ### T1. 실행 전 예측

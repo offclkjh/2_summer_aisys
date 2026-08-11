@@ -45,6 +45,9 @@ variance MLE의 분모는 `n`이며 unbiased sample variance의 `n-1`과 목적�
   `data.size`. 이 기본 배열 연산은 직접 재구현하지 않는다.
 - **검산 전용 API:** `np.mean`, `np.var(ddof=0)`, `np.var(ddof=1)`.
   T1–T3 완료 후 직접 구현 결과와만 비교한다.
+- **표준 검산 선택:** mean은 `np.mean(data)`, variance MLE는
+  `np.var(data, ddof=0)`, unbiased sample variance는 `np.var(data, ddof=1)`다.
+  `ddof`가 분모를 `N-ddof`로 바꾸므로 반드시 명시한다.
 
 ## 과제
 ### T1. 실행 전 예측

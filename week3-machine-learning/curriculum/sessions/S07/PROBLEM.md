@@ -51,6 +51,9 @@ NumPy에서 `np.log(0)`은 `-np.inf`로 표현되며, 예상된 warning은
   않는다.
 - **검산 전용 API:** 현재 필수 범위에는 완성된 분류기 API를
   사용하지 않는다. `test_contract.py`의 독립 reference 계산으로 검산한다.
+- **표준 검산 선택:** `np.testing.assert_allclose` 또는 `np.allclose`로
+  prior 합·conditional 행합·reference score를 비교한다. 외부 분류기는 prior·
+  smoothing 규칙을 숨기고 추가 의존성이 필요하므로 이 세션의 표준 검산이 아니다.
 
 ## 과제
 ### T1. 실행 전 예측
