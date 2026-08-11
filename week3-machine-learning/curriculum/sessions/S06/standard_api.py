@@ -1,4 +1,4 @@
-"""S06 standard API reference after completing the direct implementation."""
+"""S06 standard API examples after completing the direct implementation."""
 
 import numpy as np
 from scipy.stats import multinomial
