@@ -9,12 +9,23 @@ def theoretical_moments(
     values: np.ndarray, probabilities: np.ndarray
 ) -> tuple[float, float]:
     """Return the distribution expectation and variance."""
-    raise NotImplementedError("T3: theoretical_moments")
+    # raise NotImplementedError("T3: theoretical_moments")
+    avg, var = 0, 0
+    for i in range(len(values)):
+        avg += values[i] * probabilities[i]
 
+    for i in range(len(probabilities)):
+        var += (values[i] - avg) ** 2 * probabilities[i]
+    return avg, var
 
 def sample_moments(samples: np.ndarray) -> tuple[float, float]:
     """Return the sample mean and unbiased sample variance (denominator n - 1)."""
-    raise NotImplementedError("T3: sample_moments")
+    # raise NotImplementedError("T3: sample_moments")
+    savg, svar = samples.sum()/samples.size, 0
+    for i in range(len(samples)):
+        svar += (samples[i] - savg) ** 2
+    svar /= (len(samples) - 1)
+    return float(savg), float(svar)
 
 
 def theoretical_covariance(
@@ -23,7 +34,10 @@ def theoretical_covariance(
     probabilities: np.ndarray,
 ) -> float:
     """Return Cov(X, Y) for aligned outcomes and their probabilities."""
-    raise NotImplementedError("T4: theoretical_covariance")
+    # raise NotImplementedError("T4: theoretical_covariance")
+    xavg, yavg = np.sum(x_values * probabilities), np.sum(y_values * probabilities)
+    cov = np.sum((x_values - xavg) * (y_values - yavg) * probabilities)
+    return float(cov)
 
 
 def main() -> None:

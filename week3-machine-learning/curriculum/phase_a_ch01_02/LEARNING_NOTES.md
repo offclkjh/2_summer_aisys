@@ -78,7 +78,126 @@ np.array([]).shape      # (0,)   : 비어 있는 1차원 배열
    객체 종류, shape, 비어 있음, dtype, 허용 값은 함수가 어떤 데이터를 의미
    있는 입력으로 인정하는지를 정의한다.
 
-## Phase A 완료 시 정리할 연결
+## S03 — 기대값·분산·공분산
 
-S04를 마친 뒤 S01–S04를 관통하는 확률 객체, 배열 축, 확률 합, 정보량의 연결을
-이곳에 3–5개로 압축한다.
+### 1. 새로운 라이브러리와 기능
+
+| 우선순위 | 종류 | 표현 | 역할 |
+|---|---|---|---|
+| 필수 | NumPy 함수 | `np.sum(x)` | 배열 원소를 합하며, 원소별 곱과 결합해 유한 가중합을 표현한다. |
+| 익숙 | Python 함수 | `float(x)` | NumPy scalar 등을 Python `float` 반환 계약에 맞게 변환한다. |
+
+### 2. 문법·구현 개선안
+
+- 수식의 유한합은 원소별 연산과 `np.sum`을 조합해 직접 표현할 수 있다.
+
+  ```python
+  expectation = np.sum(probabilities * values)
+  variance = np.sum(probabilities * (values - expectation) ** 2)
+  ```
+
+- 이론적 기대값과 공분산의 중심에는 모든 값에 같은 비중을 주는 단순평균이
+  아니라 outcome의 발생확률을 반영한 확률가중평균을 사용한다.
+- 단순평균과 가중평균이 우연히 같은 입력만으로는 잘못된 구현을 발견하지 못할
+  수 있다. 불균등한 확률과 비대칭 값을 가진 다른 유효 입력으로도 검산한다.
+- 반환 계약이 Python `float`이면 계산 결과를 반환할 때 명시적으로 변환한다.
+
+  ```python
+  return float(result)
+  ```
+
+## S04 — 정보량·entropy·cross-entropy·KL
+
+### 1. 새로운 라이브러리와 기능
+
+| 우선순위 | 종류 | 표현 | 역할 |
+|---|---|---|---|
+| 필수 | NumPy 함수 | `np.log2(x)` | base-2 logarithm을 원소별로 계산한다. 정보량의 단위는 bit가 된다. |
+| 필수 | NumPy 함수 | `np.sum(x)` | 범주별 가중항을 합해 entropy, cross-entropy, KL을 계산한다. |
+| 익숙 | NumPy 함수 | `np.isclose(a, b)` | 부동소수점 계산 결과와 관계식을 허용오차 안에서 비교한다. |
+
+### 2. 문법·구현 개선안
+
+- 정보이론 정의식은 원소별 정보량, 확률 가중, 합산으로 나누어 읽는다.
+
+  ```python
+  information = -np.log2(p)
+  weighted_terms = p * information
+  result = np.sum(weighted_terms)
+  ```
+
+- 계산할 때는 같은 구조를 한 줄의 NumPy 배열 연산으로 표현할 수 있다.
+- 부동소수점 결과는 `==`보다 `np.isclose`로 비교한다.
+- shape와 확률 합 validation은 배열이 유효한 분포인지는 확인하지만,
+  `p`와 `q`의 의미상 역할이 뒤바뀐 오류까지 확인하지는 못한다.
+
+### 3. MLAPP 코어
+
+1. **Self-information은 드문 결과일수록 크다.**
+
+   \[
+   I_p(i)=-\log_2p_i
+   \]
+
+   코드 길이 관점에서는 자주 발생하는 결과에 짧은 코드를, 드문 결과에 긴
+   코드를 배정한다. Entropy는 이 이상적인 코드 길이의 확률가중평균이다.
+
+2. **세 양은 모두 source distribution `p`로 평균낸다.**
+
+   \[
+   H(p)=E_p[-\log_2p_i]
+   \]
+
+   \[
+   H(p,q)=E_p[-\log_2q_i]
+   \]
+
+   \[
+   KL(p\|q)=E_p\left[\log_2\frac{p_i}{q_i}\right]
+   \]
+
+   `p`는 실제 발생확률과 평균의 가중치를 정하고, `q`는 모델이 부여한 정보량을
+   정한다.
+
+3. **Cross-entropy는 entropy와 추가 비용으로 분해된다.**
+
+   \[
+   H(p,q)=H(p)+KL(p\|q)
+   \]
+
+   모델 `q`가 source `p`와 다를 때 KL만큼의 평균 정보량이 추가된다.
+
+4. **KL의 방향은 중요하다.**
+
+   `KL(p || q)`는 `p`로 평균내고 `KL(q || p)`는 `q`로 평균낸다. 첫 번째
+   인수가 기대값의 기준을 정하므로 일반적으로 두 값은 다르다.
+
+5. **균등분포는 유한한 범주에서 entropy를 최대화한다.**
+
+   균등분포 `u`에 대해
+
+   \[
+   KL(p\|u)=-H(p)+\log_2|\mathcal X|\geq0
+   \]
+
+   이므로 \(H(p)\leq\log_2|\mathcal X|\)이고, 등호는 `p`가 균등분포일 때 성립한다.
+
+6. **MLE와 KL은 같은 최적화 문제로 연결된다.**
+
+   경험분포를 \(\hat p\), 모델을 \(q_\theta\)라 하면
+
+   \[
+   KL(\hat p\|q_\theta)=H(\hat p,q_\theta)-H(\hat p)
+   \]
+
+   이다. \(H(\hat p)\)는 파라미터와 무관한 상수이므로 MLE, 평균 NLL 최소화,
+   경험분포에 대한 cross-entropy 최소화, KL 최소화는 같은 최적해를 갖는다.
+
+## Phase A 완료 시 연결
+
+1. 확률분포는 음이 아닌 값들의 배열이며 전체 확률 합은 1이다.
+2. `np.sum`의 축은 어떤 확률변수를 제거하거나 어떤 outcome을 평균내는지 나타낸다.
+3. 기대값, 분산, entropy는 모두 outcome별 값을 확률로 가중한 유한합이다.
+4. shape와 수치 조건이 같아도 source, model, 관측, 파라미터의 의미는 서로 다르다.
+5. 정보이론의 cross-entropy와 KL은 이후 likelihood와 MLE를 loss 관점으로 연결하는
+   기반이 된다.
