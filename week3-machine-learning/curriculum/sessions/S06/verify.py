@@ -1,18 +1,7 @@
-"""S06 verification: compare learner functions with standard NumPy references."""
-
-from __future__ import annotations
-
-import math
+"""S06 standard API reference after completing the direct implementation."""
 
 import numpy as np
-
-from starter import (
-    categorical_likelihood,
-    categorical_mle,
-    counts_from_labels,
-    multinomial_pmf,
-    one_hot,
-)
+from scipy.stats import multinomial
 
 
 def main() -> None:
@@ -20,59 +9,45 @@ def main() -> None:
     theta = np.array([0.2, 0.3, 0.5], dtype=np.float64)
     num_categories = theta.size
 
-    actual_one_hot = one_hot(labels, num_categories)
-    actual_counts = counts_from_labels(labels, num_categories)
+    # One-hot encoding and category counts with standard NumPy APIs.
+    one_hot = np.eye(num_categories, dtype=np.float64)[labels]
+    counts = np.bincount(labels, minlength=num_categories)
 
-    # Standard NumPy references introduced in PROBLEM.md.
-    standard_one_hot = np.eye(num_categories, dtype=np.float64)[labels]
-    standard_counts = np.bincount(labels, minlength=num_categories)
+    # An ordered Categorical sequence is selected by indexing and multiplied.
+    sequence_likelihood = np.prod(theta[labels])
 
-    np.testing.assert_array_equal(actual_one_hot, standard_one_hot)
-    print("PASS: one_hot matches np.eye indexing")
-
-    np.testing.assert_array_equal(actual_counts, standard_counts)
-    print("PASS: counts match np.bincount")
-
-    np.testing.assert_array_equal(actual_one_hot.sum(axis=0), actual_counts)
-    print("PASS: one_hot column sums equal counts")
-
-    sequence = categorical_likelihood(labels, theta)
-    count_probability = multinomial_pmf(actual_counts, theta)
-    coefficient = math.factorial(labels.size) // math.prod(
-        math.factorial(int(count)) for count in actual_counts
+    # A Multinomial count probability is available as a completed SciPy PMF.
+    count_pmf = multinomial.pmf(
+        counts,
+        n=labels.size,
+        p=theta,
     )
-    np.testing.assert_allclose(
-        count_probability / sequence,
-        coefficient,
-        rtol=1e-7,
-        atol=1e-12,
-    )
-    print("PASS: count-PMF/sequence ratio equals coefficient")
+
+    # The Categorical MLE is the normalized count vector.
+    mle = counts / counts.sum()
+
+    print("one_hot:\n", one_hot)
+    print("counts:", counts)
+    print("sequence likelihood:", sequence_likelihood)
+    print("multinomial PMF:", count_pmf)
+    print("MLE:", mle)
+
+    print("\nT4 relationships")
+    print("one_hot column sums:", one_hot.sum(axis=0))
+    print("count-PMF / sequence:", count_pmf / sequence_likelihood)
 
     permuted_labels = labels[::-1]
-    permuted_counts = counts_from_labels(permuted_labels, num_categories)
-    np.testing.assert_array_equal(permuted_counts, actual_counts)
-    np.testing.assert_allclose(
-        categorical_likelihood(permuted_labels, theta),
-        sequence,
-        rtol=1e-7,
-        atol=1e-12,
+    permuted_counts = np.bincount(
+        permuted_labels,
+        minlength=num_categories,
     )
-    np.testing.assert_allclose(
-        multinomial_pmf(permuted_counts, theta),
-        count_probability,
-        rtol=1e-7,
-        atol=1e-12,
+    print("permuted counts:", permuted_counts)
+    print("permuted sequence likelihood:", np.prod(theta[permuted_labels]))
+    print(
+        "permuted multinomial PMF:",
+        multinomial.pmf(permuted_counts, n=permuted_labels.size, p=theta),
     )
-    np.testing.assert_allclose(
-        categorical_mle(permuted_counts),
-        categorical_mle(actual_counts),
-        rtol=1e-7,
-        atol=1e-12,
-    )
-    print("PASS: permutation preserves counts and probabilities")
-
-    print("\nsummary: 5/5 checks passed")
+    print("permuted MLE:", permuted_counts / permuted_counts.sum())
 
 
 if __name__ == "__main__":

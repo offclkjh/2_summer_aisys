@@ -51,9 +51,9 @@ one_hot[i,j] = 1 if labels[i]=j else 0
 - **사용 권장 API:** `np.zeros((N,K))`, `np.arange(N)`, paired advanced
   indexing, `.sum(axis=0)`, `theta[labels]`, `np.prod`, `math.factorial`, `math.prod`.
   이 primitive들을 조합해 정의식을 표현한다.
-- **검산 전용 API:** `np.eye(K)[labels]`, `np.bincount(labels,
-  minlength=K)`, `np.unique(..., return_counts=True)`. one-hot/count를 한 호출로
-  완성하므로 T3 직접 구현에는 쓰지 않고 T4에서만 비교한다.
+- **표준 API reference:** `np.eye(K)[labels]`, `np.bincount(labels,
+  minlength=K)`, `scipy.stats.multinomial.pmf(counts, n=n, p=theta)`. T3에서
+  개념을 직접 구현한 뒤 `verify.py`에서 실제 사용 형태를 읽고 실행한다.
 - **표준 검산 선택:** one-hot은 `np.eye(K, dtype=np.float64)[labels]`,
   count는 `np.bincount(labels, minlength=K)`다. 둘 다 NumPy의 대표적인 vectorized
   표현이고 결과 shape가 명확하다. `minlength=K`를 빼면 관측되지 않은
@@ -85,10 +85,11 @@ likelihood/PMF는 Python `float`, MLE는 `(K,)` `float64`를 반환한다.
 `math.prod(...)`를 사용해도 된다. 부동소수 비교 허용오차는 `rtol=1e-7`,
 `atol=1e-12`다.
 
-### T4. 검산
+### T4. 표준 API 확인
 
-T4에서 새 검산 코드를 작성하지 않는다. T1–T3을 마친 뒤 제공된
-`verify.py`를 실행하고 각 PASS/FAIL의 의미를 `answers.md`에 기록한다.
+T4에서 검산 코드를 작성하지 않는다. T1–T3을 마친 뒤 제공된
+`verify.py`를 읽고 실행해, 같은 작업을 NumPy/SciPy 표준 API로 어떻게
+표현하는지 확인한다.
 
 1. **T4-1** one-hot의 열합과 count vector를 비교한다.
 2. **T4-2** count PMF / sequence likelihood와 Multinomial 계수를 비교한다.
@@ -111,7 +112,7 @@ cd week3-machine-learning/curriculum/sessions/S06
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
 
-`verify.py`는 표준 API와 개념 관계를 읽을 수 있는 검산 예시이고,
+`verify.py`는 PASS/FAIL 테스트가 아니라 표준 API 사용 예시이고,
 `test_contract.py`는 다른 유효한 입력에서도 함수 계약을 자동 검사한다.
 
 ## 제출물
