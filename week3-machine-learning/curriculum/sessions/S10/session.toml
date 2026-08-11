@@ -1,0 +1,15 @@
+id = "S10"
+title = "Multivariate Gaussian 계산"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S09"]
+required_concepts = ["math.vector_matrix", "math.linear_system", "prob.covariance_matrix"]
+taught_here = ["dist.gaussian_multivariate", "dist.mahalanobis", "numeric.stable_logpdf"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+[concept_anchors]
+"dist.gaussian_multivariate" = "PROBLEM.md#사용할-정의"
+"dist.mahalanobis" = "PROBLEM.md#사용할-정의"
+"numeric.stable_logpdf" = "PROBLEM.md#사용할-정의"

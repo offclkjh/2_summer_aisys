@@ -1,0 +1,15 @@
+id = "S06"
+title = "Categorical·Multinomial"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S05"]
+required_concepts = ["dist.bernoulli", "stat.likelihood", "coding.numpy_indexing"]
+taught_here = ["dist.categorical", "dist.multinomial", "coding.one_hot"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+[concept_anchors]
+"dist.categorical" = "PROBLEM.md#사용할-정의"
+"dist.multinomial" = "PROBLEM.md#사용할-정의"
+"coding.one_hot" = "PROBLEM.md#사용할-정의"

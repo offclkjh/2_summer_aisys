@@ -96,15 +96,15 @@ python3 tools/validate_curriculum.py
 | Phase | 세션 | 범위 | 상세 문제 상태 |
 |---|---|---|---|
 | [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01–S04 ready |
-| [B](phase_b_ch03_discrete/README.md) | S05–S07 | 이산분포와 생성분류 | S05 ready; S06–S07 planned |
-| [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | planned |
+| [B](phase_b_ch03_discrete/README.md) | S05–S07 | 이산분포와 생성분류 | S05–S07 ready |
+| [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | S08–S10 ready; S11–S12 planned |
 | [D](phase_d_ch05_bayesian/README.md) | S13–S18 | Bayesian inference와 decision | planned |
 | [E](phase_e_ch06_evaluation/README.md) | S19–S23 | frequentist evaluation | planned |
 | [F](phase_f_ch07_regression/README.md) | S24–S29 | linear regression | planned |
 | [G](phase_g_ch08_logistic/README.md) | S30–S36 | logistic regression과 calibration | planned |
 | [H](phase_h_ch11_mixture/README.md) | S37–S40 | mixture models와 EM | planned |
 
-현재 학습 가능한 문제: S01–[S05](sessions/S05/PROBLEM.md)
+현재 학습 가능한 문제: S01–S10. 각 Phase 색인에서 세션 문제로 이동한다.
 
 ## 주요 재배선
 

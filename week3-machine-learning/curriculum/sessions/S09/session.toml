@@ -1,0 +1,15 @@
+id = "S09"
+title = "Vector와 covariance"
+status = "ready"
+core_minutes = 110
+extension_minutes = 10
+depends_on = ["S03", "S08"]
+required_concepts = ["math.vector_matrix", "prob.covariance", "coding.numpy_axis"]
+taught_here = ["math.outer_product", "prob.covariance_matrix", "math.linear_transform"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+[concept_anchors]
+"math.outer_product" = "PROBLEM.md#사용할-정의"
+"prob.covariance_matrix" = "PROBLEM.md#사용할-정의"
+"math.linear_transform" = "PROBLEM.md#사용할-정의"
