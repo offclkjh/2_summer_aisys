@@ -86,6 +86,10 @@ likelihood/PMF는 Python `float`, MLE는 `(K,)` `float64`를 반환한다.
 `atol=1e-12`다.
 
 ### T4. 검산
+
+T4에서 새 검산 코드를 작성하지 않는다. T1–T3을 마친 뒤 제공된
+`verify.py`를 실행하고 각 PASS/FAIL의 의미를 `answers.md`에 기록한다.
+
 1. **T4-1** one-hot의 열합과 count vector를 비교한다.
 2. **T4-2** count PMF / sequence likelihood와 Multinomial 계수를 비교한다.
 3. **T4-3** label 순서를 바꿔도 count, 두 확률, MLE가 변하지 않는지 확인한다.
@@ -103,8 +107,12 @@ likelihood/PMF는 Python `float`, MLE는 `(K,)` `float64`를 반환한다.
 ```bash
 cd week3-machine-learning/curriculum/sessions/S06
 ../../../../.venv/bin/python starter.py
+../../../../.venv/bin/python verify.py
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
+
+`verify.py`는 표준 API와 개념 관계를 읽을 수 있는 검산 예시이고,
+`test_contract.py`는 다른 유효한 입력에서도 함수 계약을 자동 검사한다.
 
 ## 제출물
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
