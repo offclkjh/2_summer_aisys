@@ -36,6 +36,16 @@ v_hat_MLE = SSE(mu_hat)/n
 `n/2 log(2*pi*v) + SSE/(2v)`이므로 NLL와 SSE는 같은 mean에서 최소다.
 variance MLE의 분모는 `n`이며 unbiased sample variance의 `n-1`과 목적이 다르다.
 
+## 구현 도구 구분
+
+- **직접 구현:** Gaussian log-density, NLL, SSE, mean MLE, variance MLE.
+  `gaussian_mean_mle`는 `np.mean`, `gaussian_variance_mle`는 `np.var`로 바로
+  대체하지 않고 공개된 합·분모 정의를 쓴다.
+- **사용 권장 API:** vectorized `-`, `**`, `/`, `np.sum`, `np.log`,
+  `data.size`. 이 기본 배열 연산은 직접 재구현하지 않는다.
+- **검산 전용 API:** `np.mean`, `np.var(ddof=0)`, `np.var(ddof=1)`.
+  T1–T3 완료 후 직접 구현 결과와만 비교한다.
+
 ## 과제
 ### T1. 실행 전 예측
 1. **T1-1** candidate mean이 data mean보다 큰지/작은지 예측한다.

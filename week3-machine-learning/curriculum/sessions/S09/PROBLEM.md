@@ -34,9 +34,21 @@ Sigma = R^T R / N                          shape (D,D)
 y = A x,  Sigma_y = A Sigma A^T            shape (M,M)
 batched transformed = data @ A.T           shape (N,M)
 ```
-구현에서 `np.outer(v, v)`는 vector `v`의 outer product를 반환한다.
+`np.outer(v, v)`는 vector `v`의 outer product를 반환하지만 이 세션에서는
+직접 구현 후 검산에만 사용한다.
 이 세션은 경험분포에 동일 가중치 `1/N`을 주는 covariance만 다룬다.
 대각은 feature variance, 비대각은 feature 사이 covariance이며 Sigma는 대칭이다.
+
+## 구현 도구 구분
+
+- **직접 구현:** vector를 `(D,1)` column과 `(1,D)` row로 바꿔
+  outer product를 만드는 과정, centering 후 outer-product 합/행렬곱으로
+  covariance를 만드는 과정, `A Sigma A.T` 변환.
+- **사용 권장 API:** `np.mean(axis=0)`, broadcasting, `vector[:,None]`,
+  `vector[None,:]`, transpose `.T`, matrix multiplication `@`, `/ data.shape[0]`.
+- **검산 전용 API:** `np.outer`, `np.cov(data, rowvar=False, bias=True)`.
+  outer product/covariance 전체를 한 호출로 완성하므로 T3에서는 쓰지 않고,
+  직접 구현 후 T4에서만 비교한다. `bias=True`는 분모 `N`을 뜻한다.
 
 ## 과제
 ### T1. 실행 전 예측

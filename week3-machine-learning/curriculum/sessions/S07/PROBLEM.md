@@ -42,6 +42,16 @@ score의 argmax만으로 분류할 수 있다. 모든 score가 `-inf`면 `argmax
 NumPy에서 `np.log(0)`은 `-np.inf`로 표현되며, 예상된 warning은
 `np.errstate(divide="ignore")`로 범위를 한정해 숨길 수 있다.
 
+## 구현 도구 구분
+
+- **직접 구현:** count에서 class prior/conditional로 정규화하는 식,
+  additive smoothing 분자·분모, log-joint score.
+- **사용 권장 API:** `np.sum(..., axis=..., keepdims=True)`, broadcasting,
+  `np.log`, `np.argmax`, `np.isfinite`, `np.errstate`. 이 API는 직접 재구현하지
+  않는다.
+- **검산 전용 API:** 현재 필수 범위에는 완성된 분류기 API를
+  사용하지 않는다. `test_contract.py`의 독립 reference 계산으로 검산한다.
+
 ## 과제
 ### T1. 실행 전 예측
 1. **T1-1** 더 큰 class prior를 예측한다.

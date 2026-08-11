@@ -43,6 +43,18 @@ theta_hat_j = c_j / n
 one_hot[i,j] = 1 if labels[i]=j else 0
 ```
 
+## 구현 도구 구분
+
+- **직접 구현:** `(N,K)` one-hot에 행별 label 열을 1로 배치하는
+  과정, one-hot 열합과 count의 관계, Categorical sequence likelihood,
+  Multinomial count PMF, `counts/n` MLE.
+- **사용 권장 API:** `np.zeros((N,K))`, `np.arange(N)`, paired advanced
+  indexing, `.sum(axis=0)`, `theta[labels]`, `np.prod`, `math.factorial`, `math.prod`.
+  이 primitive들을 조합해 정의식을 표현한다.
+- **검산 전용 API:** `np.eye(K)[labels]`, `np.bincount(labels,
+  minlength=K)`, `np.unique(..., return_counts=True)`. one-hot/count를 한 호출로
+  완성하므로 T3 직접 구현에는 쓰지 않고 T4에서만 비교한다.
+
 ## 과제
 
 ### T1. 실행 전 예측

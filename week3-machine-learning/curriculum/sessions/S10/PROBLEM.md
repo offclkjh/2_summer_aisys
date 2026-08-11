@@ -38,6 +38,18 @@ batch에서는 RHS를 `residuals.T` shape `(D,N)`로 주고 결과를 다시 tra
 `sign, logabsdet=np.linalg.slogdet(Sigma)`는 determinant를 먼저 크게/작게 만들지
 않고 부호와 log absolute determinant를 준다. SPD에서 `sign=1`이다.
 
+## 구현 도구 구분
+
+- **직접 구현:** residual→linear solve→Mahalanobis quadratic term→
+  multivariate Gaussian log-density의 전체 경로. 완성된 Gaussian 분포
+  함수로 대체하지 않는다.
+- **사용 권장 API:** `np.linalg.solve`, `np.linalg.slogdet`, transpose `.T`,
+  `np.sum(..., axis=1)`, broadcasting, `np.log`. `solve`/`slogdet`는 이 세션에서
+  재구현할 대상이 아니다.
+- **검산 전용 API:** 추가 분포 라이브러리 없이 `test_contract.py`의
+  독립 reference 계산으로 검산한다. `np.linalg.inv`/`np.linalg.det`는
+  검산용으로도 권장하지 않는다.
+
 ## 과제
 ### T1. 실행 전 예측
 1. **T1-1** residuals와 logpdf 출력 shape을 예측한다.
