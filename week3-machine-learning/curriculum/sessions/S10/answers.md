@@ -13,12 +13,7 @@
 ## T3. 직접 구현
 - **T3-1** mahalanobis_squared:
 - **T3-2** multivariate_gaussian_logpdf:
-## T4. 검산
-- **T4-1** linear-system equality:
-- **T4-2** q/nonnegative:
-- **T4-3** slogdet:
-- **T4-4** log-density/order:
-- **T4-5** diagonal replacement:
+## T4. 표준 API 참조 (선택, 작성 없음)
 ## T5. 잘못된 해석
 - **T5-1** elementwise division:
 - **T5-2** wrong axis:

@@ -71,11 +71,11 @@ batched transformed = data @ A.T           shape (N,M)
 4. **T3-4** `transform_covariance(matrix, covariance) -> (M,M) float64`를 완성한다.
 계약: data는 nonempty 2D `float64`, vector는 `(D,)`, matrix는 `(M,D)`다.
 부동소수 비교 허용오차는 `rtol=1e-7`, `atol=1e-12`다.
-### T4. 검산
-1. **T4-1** centered 열평균이 0인지 확인한다.
-2. **T4-2** outer 합과 `R.T @ R`을 비교한다.
-3. **T4-3** covariance가 대칭이고 대각이 직접 구한 variance와 같은지 확인한다.
-4. **T4-4** transformed data의 covariance와 `A Sigma A.T`를 비교한다.
+### T4. 표준 API 참조 (선택)
+
+T4 답안이나 검산 코드는 작성하지 않아도 된다. T1–T3 후 `standard_api.py`를
+읽어 `np.outer`, `np.cov(rowvar=False, bias=True)` 표현을 참조한다.
+outer product, covariance, linear transform의 표준 표현이 파일에 제공된다.
 ### T5. 잘못된 해석
 1. **T5-1** `R @ R.T`를 쓰면 shape과 의미가 어떻게 바뀌는지 설명한다.
 2. **T5-2** 분모 `N-1`을 쓰면 이 세션과 다른 어떤 통계량인지 설명한다.
@@ -89,11 +89,13 @@ batched transformed = data @ A.T           shape (N,M)
 ```bash
 cd week3-machine-learning/curriculum/sessions/S09
 ../../../../.venv/bin/python starter.py
+../../../../.venv/bin/python standard_api.py  # 선택
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
 ## 제출물
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
 ## 완료 기준
-T1–T6을 설명하고 covariance와 linear transform을 shape·수치·의미로 연결한다.
+T1–T3과 T5–T6을 설명하고 covariance와 linear transform을 shape·수치·
+의미로 연결한다. T4는 선택 참조다.
 ## 선택 확장
 shape `(2,2)`인 transform으로 같은 규칙을 검산한다.

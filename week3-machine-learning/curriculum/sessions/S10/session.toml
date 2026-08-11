@@ -9,6 +9,7 @@ taught_here = ["dist.gaussian_multivariate", "dist.mahalanobis", "numeric.stable
 problem = "PROBLEM.md"
 starter = "starter.py"
 test = "test_contract.py"
+standard_api = "standard_api.py"
 [concept_anchors]
 "dist.gaussian_multivariate" = "PROBLEM.md#사용할-정의"
 "dist.mahalanobis" = "PROBLEM.md#사용할-정의"

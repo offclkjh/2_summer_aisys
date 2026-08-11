@@ -16,11 +16,7 @@
 - **T3-2** conditional_probabilities:
 - **T3-3** log_joint_scores:
 - **T3-4** predict_class:
-## T4. 검산
-- **T4-1** 합:
-- **T4-2** category 0:
-- **T4-3** category 2 `-inf`:
-- **T4-4** smoothing finite:
+## T4. 표준 API 참조 (선택, 작성 없음)
 ## T5. 잘못된 해석
 - **T5-1** wrong axis:
 - **T5-2** all-`-inf` argmax:

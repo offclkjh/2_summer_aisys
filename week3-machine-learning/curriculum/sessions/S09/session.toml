@@ -9,6 +9,7 @@ taught_here = ["math.outer_product", "prob.covariance_matrix", "math.linear_tran
 problem = "PROBLEM.md"
 starter = "starter.py"
 test = "test_contract.py"
+standard_api = "standard_api.py"
 [concept_anchors]
 "math.outer_product" = "PROBLEM.md#사용할-정의"
 "prob.covariance_matrix" = "PROBLEM.md#사용할-정의"

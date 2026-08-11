@@ -125,6 +125,9 @@ def main() -> None:
                     filename = local.get(file_key)
                     if not filename or not (session_dir / filename).is_file():
                         errors.append(f"{session_id}: missing declared {file_key} file")
+                standard_api = local.get("standard_api")
+                if standard_api and not (session_dir / standard_api).is_file():
+                    errors.append(f"{session_id}: missing declared standard_api file")
                 anchors = local.get("concept_anchors", {})
                 for concept in session["taught_here"]:
                     anchor = anchors.get(concept)

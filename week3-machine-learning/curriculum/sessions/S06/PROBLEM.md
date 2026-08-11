@@ -91,9 +91,8 @@ T4 답안이나 검산 코드는 작성하지 않아도 된다. T1–T3을 마�
 `standard_api.py`를 읽어, 같은 작업을 NumPy/SciPy 표준 API로 어떻게
 표현하는지 참조한다. 실행은 선택이다.
 
-1. **T4-1** one-hot의 열합과 count vector를 비교한다.
-2. **T4-2** count PMF / sequence likelihood와 Multinomial 계수를 비교한다.
-3. **T4-3** label 순서를 바꿔도 count, 두 확률, MLE가 변하지 않는지 확인한다.
+one-hot/count, sequence/count PMF, permutation 관계의 표준 표현이 파일에
+함께 제공된다.
 
 ### T5. 잘못된 해석
 1. **T5-1** Multinomial 계수를 sequence likelihood에 곱하는 오류를 설명한다.
@@ -119,7 +118,8 @@ cd week3-machine-learning/curriculum/sessions/S06
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
 
 ## 완료 기준
-T1–T6을 설명하고 다섯 함수가 공개 계약과 다른 유효한 입력을 통과한다.
+T1–T3과 T5–T6을 설명하고 다섯 함수가 공개 계약과 다른 유효한
+입력을 통과한다. T4는 선택 참조다.
 
 ## 선택 확장
 입력 validation과 log-likelihood를 추가한다.

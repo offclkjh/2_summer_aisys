@@ -14,11 +14,7 @@
 - **T3-2** outer_product:
 - **T3-3** covariance_matrix_mle:
 - **T3-4** transform_covariance:
-## T4. 검산
-- **T4-1** centered mean:
-- **T4-2** outer sum/matrix:
-- **T4-3** symmetry/diagonal:
-- **T4-4** transformed covariance:
+## T4. 표준 API 참조 (선택, 작성 없음)
 ## T5. 잘못된 해석
 - **T5-1** R R.T:
 - **T5-2** N-1:

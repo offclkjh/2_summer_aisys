@@ -9,6 +9,7 @@ taught_here = ["dist.gaussian_1d", "loss.gaussian_nll", "loss.mse"]
 problem = "PROBLEM.md"
 starter = "starter.py"
 test = "test_contract.py"
+standard_api = "standard_api.py"
 [concept_anchors]
 "dist.gaussian_1d" = "PROBLEM.md#사용할-정의"
 "loss.gaussian_nll" = "PROBLEM.md#사용할-정의"

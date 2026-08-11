@@ -78,11 +78,11 @@ NumPy에서 `np.log(0)`은 `-np.inf`로 표현되며, 예상된 warning은
 양수이다. `alpha>=0`, `0<=category<K`이다. priors `(C,)`/conditionals `(C,K)`는
 `float64` 확률 배열이고 `predict_class`는 Python `int`를 반환한다.
 부동소수 비교 허용오차는 `rtol=1e-7`, `atol=1e-12`다.
-### T4. 검산
-1. **T4-1** prior 합과 conditional 행합을 확인한다.
-2. **T4-2** category `0` 손계산과 코드를 비교한다.
-3. **T4-3** category `2`의 unsmoothed `-inf` 두 개를 재현한다.
-4. **T4-4** smoothing 후 모든 conditional과 score가 finite인지 확인한다.
+### T4. 표준 API 참조 (선택)
+
+T4 답안이나 검산 코드는 작성하지 않아도 된다. T1–T3 후 `standard_api.py`를
+읽어 NumPy의 reduction·broadcasting·log·argmax 표현을 참조한다.
+prior, conditional, zero-count, smoothing 표준 표현이 파일에 제공된다.
 ### T5. 잘못된 해석
 1. **T5-1** 열 방향으로 정규화했을 때 깨지는 의미를 설명한다.
 2. **T5-2** all-`-inf` score에 `argmax`를 바로 쓰면 안 되는 이유를 설명한다.
@@ -96,11 +96,13 @@ NumPy에서 `np.log(0)`은 `-np.inf`로 표현되며, 예상된 warning은
 ```bash
 cd week3-machine-learning/curriculum/sessions/S07
 ../../../../.venv/bin/python starter.py
+../../../../.venv/bin/python standard_api.py  # 선택
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
 ## 제출물
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
 ## 완료 기준
-T1–T6을 설명하고 zero-count failure와 smoothing 후 변화를 코드로 재현한다.
+T1–T3과 T5–T6을 설명하고 zero-count failure와 smoothing 후 변화를
+코드로 재현한다. T4는 선택 참조다.
 ## 선택 확장
 alpha 값 두 개를 비교하되 Dirichlet posterior로 해석하지 않는다.

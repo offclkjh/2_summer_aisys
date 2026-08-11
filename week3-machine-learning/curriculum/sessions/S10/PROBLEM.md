@@ -73,12 +73,12 @@ batch에서는 RHS를 `residuals.T` shape `(D,N)`로 주고 결과를 다시 tra
 계약: observations `(N,D)`, mean `(D,)`, covariance `(D,D)`는 `float64`, `N,D>=1`,
 covariance는 SPD다. `np.linalg.inv`, `np.linalg.det`는 사용하지 않는다.
 부동소수 비교 허용오차는 `rtol=1e-7`, `atol=1e-12`다.
-### T4. 검산
-1. **T4-1** `covariance @ z == residual`을 확인한다.
-2. **T4-2** 손계산과 Mahalanobis 함수, 모든 `q>=0`을 확인한다.
-3. **T4-3** `slogdet` 결과와 손계산을 비교한다.
-4. **T4-4** 두 log-density와 예측한 순서를 확인한다.
-5. **T4-5** covariance의 off-diagonal을 0으로 바꾸면 결과가 변하는지 확인한다.
+### T4. 표준 API 참조 (선택)
+
+T4 답안이나 검산 코드는 작성하지 않아도 된다. T1–T3 후 `standard_api.py`를
+읽어 `solve`, `slogdet`, `scipy.stats.multivariate_normal.logpdf` 표현을 참조한다.
+solve, Mahalanobis reduction, slogdet, Gaussian logpdf의 표준 표현이 파일에
+제공된다.
 ### T5. 잘못된 해석
 1. **T5-1** `residual/covariance`로 선형계를 대체할 수 없는 이유를 설명한다.
 2. **T5-2** batch `residual*solution`을 `axis=0`으로 합했을 때 shape/의미 오류를 설명한다.
@@ -92,11 +92,13 @@ covariance는 SPD다. `np.linalg.inv`, `np.linalg.det`는 사용하지 않는다
 ```bash
 cd week3-machine-learning/curriculum/sessions/S10
 ../../../../.venv/bin/python starter.py
+../../../../.venv/bin/python standard_api.py  # 선택
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
 ## 제출물
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
 ## 완료 기준
-T1–T6을 설명하고 inverse 없이 batched log-density를 계산한다.
+T1–T3과 T5–T6을 설명하고 inverse 없이 batched log-density를 계산한다.
+T4는 선택 참조다.
 ## 선택 확장
 다른 SPD covariance와 batch size 1에서 shape `(1,)`를 유지하는지 확인한다.

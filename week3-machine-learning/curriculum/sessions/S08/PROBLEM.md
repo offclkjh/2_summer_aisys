@@ -67,11 +67,11 @@ variance MLE의 분모는 `n`이며 unbiased sample variance의 `n-1`과 목적�
 5. **T3-5** `gaussian_variance_mle(data, mean) -> float`를 완성한다.
 계약: data/x는 nonempty 1D `float64`, `variance>0`, scalar 반환은 Python `float`.
 부동소수 비교 허용오차는 `rtol=1e-7`, `atol=1e-12`다.
-### T4. 검산
-1. **T4-1** `-sum(logpdf)`와 NLL을 비교한다.
-2. **T4-2** 손계산과 다섯 함수 결과를 비교한다.
-3. **T4-3** 두 mean의 NLL 차이와 `SSE/(2v)` 차이를 비교한다.
-4. **T4-4** MLE를 `np.mean`, `np.var(ddof=0)`와 비교한다.
+### T4. 표준 API 참조 (선택)
+
+T4 답안이나 검산 코드는 작성하지 않아도 된다. T1–T3 후 `standard_api.py`를
+읽어 `scipy.stats.norm`, `mean`, `var(ddof=...)` 표현을 참조한다.
+Gaussian logpdf, NLL, mean/variance의 표준 표현이 파일에 제공된다.
 ### T5. 잘못된 해석
 1. **T5-1** variance 자리에 표준편차를 넣는 오류를 설명한다.
 2. **T5-2** variance MLE에 `n-1`을 쓰는 오류를 설명한다.
@@ -85,11 +85,13 @@ variance MLE의 분모는 `n`이며 unbiased sample variance의 `n-1`과 목적�
 ```bash
 cd week3-machine-learning/curriculum/sessions/S08
 ../../../../.venv/bin/python starter.py
+../../../../.venv/bin/python standard_api.py  # 선택
 ../../../../.venv/bin/python -m unittest -v test_contract.py
 ```
 ## 제출물
 `answers.md`, 완성한 `starter.py`, 통과한 계약 테스트.
 ## 완료 기준
-T1–T6을 설명하고 NLL/SSE/MLE 관계와 분모 `n`·`n-1`을 구분한다.
+T1–T3과 T5–T6을 설명하고 NLL/SSE/MLE 관계와 분모 `n`·`n-1`을
+구분한다. T4는 선택 참조다.
 ## 선택 확장
 세 mean 후보를 추가해 NLL과 SSE 순서를 비교한다.
