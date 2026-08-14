@@ -7,7 +7,7 @@
 
 - [Phase A — 확률 언어와 계산 객체](phase_a_ch01_02/LEARNING_NOTES.md)
 - [Phase B — 이산분포와 생성분류](phase_b_ch03_discrete/LEARNING_NOTES.md)
-- Phase C — S08–S12 완료 후 생성
+- [Phase C — Gaussian models](phase_c_ch04_gaussian/LEARNING_NOTES.md)
 - Phase D — S13–S18 완료 후 생성
 - Phase E — S19–S23 완료 후 생성
 - Phase F — S24–S29 완료 후 생성
