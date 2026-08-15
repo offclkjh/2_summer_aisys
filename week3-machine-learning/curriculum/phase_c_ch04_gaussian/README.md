@@ -5,7 +5,7 @@
 - [S08 1차원 Gaussian](../sessions/S08/PROBLEM.md) — ready
 - [S09 Vector와 covariance](../sessions/S09/PROBLEM.md) — ready
 - [S10 Multivariate Gaussian 계산](../sessions/S10/PROBLEM.md) — ready
-- S11 Gaussian conditioning과 marginalization — planned
+- [S11 Gaussian conditioning과 marginalization](../sessions/S11/PROBLEM.md) — draft
 - S12 Gaussian 생성분류 — planned
 
 이 Phase는 autograd나 optimizer를 선수지식으로 요구하지 않는다. 수치 검산은

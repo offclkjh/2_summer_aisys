@@ -132,7 +132,7 @@ python3 tools/validate_curriculum.py
 |---|---|---|---|
 | [A](phase_a_ch01_02/README.md) | S01–S04 | 확률 언어와 계산 객체 | S01–S04 ready |
 | [B](phase_b_ch03_discrete/README.md) | S05–S07 | 이산분포와 생성분류 | S05–S07 ready |
-| [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | S08–S10 ready; S11–S12 planned |
+| [C](phase_c_ch04_gaussian/README.md) | S08–S12 | Gaussian models | S08–S10 ready; S11 draft; S12 planned |
 | [D](phase_d_ch05_bayesian/README.md) | S13–S18 | Bayesian inference와 decision | planned |
 | [E](phase_e_ch06_evaluation/README.md) | S19–S23 | frequentist evaluation | planned |
 | [F](phase_f_ch07_regression/README.md) | S24–S29 | linear regression | planned |

@@ -1,0 +1,16 @@
+id = "S11"
+title = "Gaussian conditioning과 marginalization"
+status = "draft"
+core_minutes = 120
+extension_minutes = 45
+depends_on = ["S02", "S10"]
+required_concepts = ["prob.joint_marginal_conditional", "math.linear_system", "dist.gaussian_multivariate"]
+taught_here = ["dist.gaussian_conditioning", "dist.gaussian_marginal"]
+problem = "PROBLEM.md"
+starter = "starter.py"
+test = "test_contract.py"
+standard_api = "standard_api.py"
+
+[concept_anchors]
+"dist.gaussian_conditioning" = "PROBLEM.md#사용할-정의"
+"dist.gaussian_marginal" = "PROBLEM.md#사용할-정의"
