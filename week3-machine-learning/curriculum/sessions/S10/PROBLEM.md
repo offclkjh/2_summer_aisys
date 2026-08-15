@@ -44,17 +44,17 @@ benchmark하는 것은 이번 세션의 범위가 아니다.
 
 ## 모델과 가정
 
-\[
+$$
 x\in\mathbb R^D,\qquad
 \mu\in\mathbb R^D,\qquad
 \Sigma\in\mathbb R^{D\times D}.
-\]
+$$
 
 `Sigma`는 symmetric positive definite(SPD)라고 가정한다.
 
 - 대칭성: `Sigma = Sigma.T`
-- 양의 정부호: 모든 `v != 0`에 대해 \(v^T\Sigma v>0\)
-- 결과: 모든 고유값이 양수이고, \(\det\Sigma>0\)이며, \(\Sigma^{-1}\)와
+- 양의 정부호: 모든 `v != 0`에 대해 $v^T\Sigma v>0$
+- 결과: 모든 고유값이 양수이고, $\det\Sigma>0$이며, $\Sigma^{-1}$와
   Cholesky factor가 존재한다.
 
 이 가정은 단순한 구현 편의가 아니다. Full-rank Gaussian이 모든 방향에서 양의
@@ -65,79 +65,79 @@ singular한 covariance는 더 낮은 차원의 부분공간에 놓인 별도 분
 
 ### 1. Affine transform과 density 유도
 
-표준 Gaussian \(z\sim\mathcal N(0,I_D)\)와 invertible matrix \(L\)에 대해
+표준 Gaussian $z\sim\mathcal N(0,I_D)$와 invertible matrix $L$에 대해
 
-\[
+$$
 x=\mu+Lz,\qquad \Sigma=LL^T
-\]
+$$
 
 로 둔다. 이 affine transform의 평균과 covariance는
 
-\[
+$$
 \mathbb E[x]=\mu,\qquad
 \operatorname{Cov}[x]=L\operatorname{Cov}[z]L^T=LL^T=\Sigma.
-\]
+$$
 
-역변환은 \(z=L^{-1}(x-\mu)\)이고, density는 change of variables에 의해
+역변환은 $z=L^{-1}(x-\mu)$이고, density는 change of variables에 의해
 
-\[
+$$
 p_x(x)=p_z\!\left(L^{-1}(x-\mu)\right)|\det L^{-1}|.
-\]
+$$
 
-여기서 \(r=x-\mu\)라 하면
+여기서 $r=x-\mu$라 하면
 
-\[
+$$
 \|L^{-1}r\|_2^2
 =r^TL^{-T}L^{-1}r
 =r^T\Sigma^{-1}r,
-\]
+$$
 
-그리고 \(\det\Sigma=\det(LL^T)=(\det L)^2\)다. 따라서
+그리고 $\det\Sigma=\det(LL^T)=(\det L)^2$다. 따라서
 
-\[
+$$
 p(x\mid\mu,\Sigma)
 =(2\pi)^{-D/2}|\Sigma|^{-1/2}
 \exp\!\left(-\frac12r^T\Sigma^{-1}r\right).
-\]
+$$
 
 로그를 취하면 실제 구현에 사용할 식을 얻는다.
 
-\[
+$$
 \log p(x\mid\mu,\Sigma)
 =-\frac12\left[D\log(2\pi)+\log|\Sigma|+r^T\Sigma^{-1}r\right].
-\]
+$$
 
 ### 2. Mahalanobis quadratic form
 
-\[
+$$
 q(x)=r^T\Sigma^{-1}r
-\]
+$$
 
-는 squared Mahalanobis distance다. \(\Sigma^{-1}\)는 precision matrix이며,
-분산이 작은 방향의 오차를 더 크게 벌점화한다. SPD 가정으로 \(q(x)\ge 0\)이고
-\(q(x)=0\)은 \(x=\mu\)일 때뿐이다.
+는 squared Mahalanobis distance다. $\Sigma^{-1}$는 precision matrix이며,
+분산이 작은 방향의 오차를 더 크게 벌점화한다. SPD 가정으로 $q(x)\ge 0$이고
+$q(x)=0$은 $x=\mu$일 때뿐이다.
 
 ### 3. Eigen 관점의 covariance geometry
 
 대칭 SPD covariance는
 
-\[
+$$
 \Sigma=Q\Lambda Q^T,
 \qquad Q^TQ=I,
 \qquad \Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_D),
-\]
+$$
 
-로 직교대각화된다. Principal coordinates \(y=Q^Tr\)에서는
+로 직교대각화된다. Principal coordinates $y=Q^Tr$에서는
 
-\[
+$$
 q(x)=\sum_{j=1}^D\frac{y_j^2}{\lambda_j},
 \qquad
 |\Sigma|=\prod_{j=1}^D\lambda_j.
-\]
+$$
 
-따라서 \(q(x)=c\)인 등밀도면은 고유벡터 방향을 주축으로 하고, 각 반축 길이는
-\(\sqrt{c\lambda_j}\)다. Determinant의 제곱근
-\(\sqrt{|\Sigma|}\)는 이 타원체의 부피 scale이며, density의 정규화항이
+따라서 $q(x)=c$인 등밀도면은 고유벡터 방향을 주축으로 하고, 각 반축 길이는
+$\sqrt{c\lambda_j}$다. Determinant의 제곱근
+$\sqrt{|\Sigma|}$는 이 타원체의 부피 scale이며, density의 정규화항이
 분포가 넓어질수록 낮아지는 이유를 설명한다.
 
 ### 4. Shape과 계산 경로
@@ -148,11 +148,11 @@ q(x)=\sum_{j=1}^D\frac{y_j^2}{\lambda_j},
 | `mean` | `(D,)` | 평균 벡터 |
 | `covariance` | `(D,D)` | SPD covariance |
 | `residuals` | `(N,D)` | `observations - mean` |
-| `solutions` | `(N,D)` | 행마다 \(\Sigma z_i=r_i\)의 해 |
+| `solutions` | `(N,D)` | 행마다 `covariance @ z_i = r_i`의 해 |
 | `q` | `(N,)` | 관측별 squared Mahalanobis distance |
 | `logpdf` | `(N,)` | 관측별 log-density |
 
-수학식에 \(\Sigma^{-1}\)가 있어도 inverse를 만들 필요는 없다.
+수학식에 $\Sigma^{-1}$가 있어도 inverse를 만들 필요는 없다.
 
 ```text
 residuals = observations - mean
@@ -165,12 +165,12 @@ logpdf_i = -0.5 * (D*log(2*pi) + logdet + q_i)
 
 Gaussian log-density의 세 항은 서로 다른 역할을 한다.
 
-- \(D\log(2\pi)\): 차원에 따른 상수
-- \(\log|\Sigma|\): 전체 분포의 부피 scale과 정규화
-- \(q(x)\): 관측 위치에 따른 상대적 벌점
+- $D\log(2\pi)$: 차원에 따른 상수
+- $\log|\Sigma|$: 전체 분포의 부피 scale과 정규화
+- $q(x)$: 관측 위치에 따른 상대적 벌점
 
-같은 \(\mu,\Sigma\) 아래에서는 앞의 두 항이 모든 관측에 공통이므로 density
-순서는 \(q(x)\)의 역순이다. 서로 다른 covariance를 가진 모델을 비교할 때는
+같은 $\mu,\Sigma$ 아래에서는 앞의 두 항이 모든 관측에 공통이므로 density
+순서는 $q(x)$의 역순이다. 서로 다른 covariance를 가진 모델을 비교할 때는
 Mahalanobis 항만 비교하면 안 되고 log-determinant 항도 반드시 필요하다.
 
 ### 왜 `solve`와 `slogdet`인가
@@ -181,14 +181,14 @@ Mahalanobis 항만 비교하면 안 되고 log-determinant 항도 반드시 필�
   우리가 실제로 원하는 해를 직접 계산한다.
 - `log(det(covariance))`는 determinant를 먼저 너무 크거나 작게 만든 뒤 log를
   취한다. `slogdet`는 sign과 log absolute determinant를 직접 반환한다.
-- 두 방법 모두 dense matrix에서는 주된 계산이 대체로 \(O(D^3)\)이지만,
+- 두 방법 모두 dense matrix에서는 주된 계산이 대체로 $O(D^3)$이지만,
   같은 차수라는 사실이 불필요한 계산과 수치 오차까지 같다는 뜻은 아니다.
 
 ### Cholesky, eigen, condition number
 
-SPD가 보장되면 \(\Sigma=LL^T\)인 Cholesky factor를 사용할 수 있다. 먼저
-\(Ly=r\)을 풀면 \(q=\|y\|_2^2\),
-\(\log|\Sigma|=2\sum_j\log L_{jj}\)가 된다. 이는 whitening 관점과 계산이
+SPD가 보장되면 $\Sigma=LL^T$인 Cholesky factor를 사용할 수 있다. 먼저
+$Ly=r$을 풀면 $q=\|y\|_2^2$,
+$\log|\Sigma|=2\sum_j\log L_{jj}$가 된다. 이는 whitening 관점과 계산이
 직접 연결되는 경로다. Core 구현은 generic `solve`/`slogdet` 계약을 유지하고,
 Cholesky 경로는 deep dive에서 동치성을 검산한다.
 
@@ -204,7 +204,7 @@ covariance = np.array([[2., 1.], [1., 2.]], dtype=np.float64) # (D,D)
 observations = np.array([[1., 0.], [0., 2.]], dtype=np.float64) # (N,D)
 ```
 
-이 세션의 구현 계약에서는 입력 dtype이 `float64`, \(N,D\ge 1\), covariance가
+이 세션의 구현 계약에서는 입력 dtype이 `float64`, $N,D\ge 1$, covariance가
 SPD라고 주어진다.
 
 ## 구현 도구 구분
@@ -236,9 +236,9 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
 
 ### T2. 유도 재구성
 
-1. **T2-1** \(x=\mu+Lz\)에서 change of variables를 적용해 정규화항의
-   \(|\det L|^{-1}\)를 얻는 과정을 자신의 식으로 다시 쓴다.
-2. **T2-2** \(\|L^{-1}r\|^2=q(x)\)와 \(|\Sigma|=(\det L)^2\)를 보여 최종
+1. **T2-1** $x=\mu+Lz$에서 change of variables를 적용해 정규화항의
+   $|\det L|^{-1}$를 얻는 과정을 자신의 식으로 다시 쓴다.
+2. **T2-2** $\|L^{-1}r\|^2=q(x)$와 $|\Sigma|=(\det L)^2$를 보여 최종
    density 식으로 연결한다.
 3. **T2-3** SPD가 보장하는 성질 중 이번 density와 계산에 실제 사용되는 것을
    세 가지 이상 골라 연결 관계를 설명한다.
@@ -246,8 +246,8 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
 ### T3. 2D 손계산
 
 1. **T3-1** 두 residual vector를 구한다.
-2. **T3-2** 각 \(\Sigma z_i=r_i\)를 풀어 \(z_i\)를 구한다.
-3. **T3-3** 두 \(q_i=r_i^Tz_i\)를 구한다.
+2. **T3-2** 각 $\Sigma z_i=r_i$를 풀어 $z_i$를 구한다.
+3. **T3-3** 두 $q_i=r_i^Tz_i$를 구한다.
 4. **T3-4** determinant, sign, logabsdet를 구한다.
 5. **T3-5** 두 log-density를 구하고 T1의 예측과 비교한다.
 
@@ -288,27 +288,27 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
 1. 주어진 covariance의 eigenvalue/eigenvector를 손으로 구한 뒤 `np.linalg.eigh`로
    검산한다.
 2. 두 residual을 principal coordinates로 바꾸고
-   \(q=\sum_j y_j^2/\lambda_j\)로 다시 계산한다.
+   $q=\sum_j y_j^2/\lambda_j$로 다시 계산한다.
 3. 등밀도 타원의 장축 방향과 두 반축 길이의 비를 eigenvalue로 설명한다.
 
 ### D2. Cholesky와 whitening
 
-1. `np.linalg.cholesky`로 \(L\)을 구해 \(LL^T=\Sigma\)를 검산한다.
-2. \(Ly_i=r_i\)를 풀고 \(\|y_i\|^2\)가 Core의 Mahalanobis 값과 같은지 확인한다.
-3. \(2\sum_j\log L_{jj}\)가 `slogdet`의 logabsdet와 같은지 확인한다.
+1. `np.linalg.cholesky`로 $L$을 구해 $LL^T=\Sigma$를 검산한다.
+2. $Ly_i=r_i$를 풀고 $\|y_i\|^2$가 Core의 Mahalanobis 값과 같은지 확인한다.
+3. $2\sum_j\log L_{jj}$가 `slogdet`의 logabsdet와 같은지 확인한다.
 
 ### D3. Conditioning 실험
 
-서로 다른 작은 양의 \(\epsilon\)에 대해
-\(\Sigma_\epsilon=Q\operatorname{diag}(1,\epsilon)Q^T\)를 만든다.
+서로 다른 작은 양의 $\epsilon$에 대해
+$\Sigma_\epsilon=Q\operatorname{diag}(1,\epsilon)Q^T$를 만든다.
 
-1. 실행 전에 \(\epsilon\)이 작아질 때 condition number와 타원 모양을 예측한다.
+1. 실행 전에 $\epsilon$이 작아질 때 condition number와 타원 모양을 예측한다.
 2. 작은 고유값 방향의 residual에 대한 Mahalanobis term 변화를 관찰한다.
 3. Mathematical SPD와 numerically reliable한 계산이 왜 별개의 질문인지 설명한다.
 
 ### D4. Covariance scale과 정규화
 
-\(\Sigma\)를 \(c\Sigma\), \(c>0\)로 바꾸었을 때 Mahalanobis 항과
+$\Sigma$를 $c\Sigma$, $c>0$로 바꾸었을 때 Mahalanobis 항과
 log-determinant 항이 각각 어떻게 변하는지 유도한다. 평균에 가까운 점과 먼 점의
 log-density가 같은 방식으로 변하는지도 분석한다.
 
