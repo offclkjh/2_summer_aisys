@@ -1,8 +1,8 @@
 id = "S10"
 title = "Multivariate Gaussian 계산"
 status = "ready"
-core_minutes = 110
-extension_minutes = 10
+core_minutes = 120
+extension_minutes = 60
 depends_on = ["S09"]
 required_concepts = ["math.vector_matrix", "math.linear_system", "prob.covariance_matrix"]
 taught_here = ["dist.gaussian_multivariate", "dist.mahalanobis", "numeric.stable_logpdf"]
