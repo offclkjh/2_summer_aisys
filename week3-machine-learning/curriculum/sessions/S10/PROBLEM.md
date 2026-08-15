@@ -7,13 +7,14 @@
 
 ### Core (120분 이내)
 
-- 표준 Gaussian의 affine transform과 Jacobian으로 다변량 Gaussian density를 유도한다.
+- 다변량 Gaussian density를 주어진 결과로 사용하고 각 항의 의미를 설명한다.
 - SPD covariance, Mahalanobis quadratic form, determinant의 확률·기하적 의미를 연결한다.
 - residual, linear solve, log-determinant로 batched log-density를 계산한다.
 - explicit inverse/determinant 대신 `solve`/`slogdet`를 사용하는 수치적 이유를 설명한다.
 
 ### Deep dive (선택)
 
+- affine transform과 Jacobian을 처음 배우는 guided derivation으로 density를 유도한다.
 - eigendecomposition으로 covariance의 주축과 축별 분산을 해석한다.
 - Cholesky factor를 whitening과 log-determinant 계산에 연결한다.
 - condition number와 거의 singular한 covariance가 계산에 미치는 영향을 관찰한다.
@@ -23,24 +24,39 @@ benchmark하는 것은 이번 세션의 범위가 아니다.
 
 ## 시작 전 선수지식 확인
 
-기초 정의를 다시 강의하지는 않는다. 다음을 식과 shape으로 설명할 수 있으면 바로
-진행한다.
+이 세션은 벡터·행렬곱, 선형계, 평균·covariance를 배웠다고 가정한다. 현재 계산에
+사용할 정의는 다음과 같다.
 
-1. 대칭행렬이 positive definite라는 조건을 quadratic form으로 쓰면?
-2. `Az=b`에서 inverse를 만들지 않고 `z`를 구하는 NumPy 함수는?
-3. 선형변환 `x=Az+b`에서 density의 change-of-variables 식에 어떤
-   determinant가 등장하는가?
-4. orthogonal matrix `Q`에 대해 `Q^-1`과 determinant의 절댓값은?
+- **Residual:** $r=x-\mu$. 관측에서 평균을 뺀 `(D,)` 벡터다.
+- **Covariance:** $\Sigma=\mathbb E[rr^T]$. 각 방향의 변동과 변수 사이의
+  co-movement를 나타내는 `(D,D)` 대칭행렬이다.
+- **SPD:** 모든 $v\ne0$에 대해 $v^T\Sigma v>0$인 대칭행렬이다. 이 세션에서는
+  covariance가 SPD라고 주어지므로 inverse, 양의 determinant, Cholesky factor가
+  존재한다.
+- **Quadratic form:** $r^TAr$처럼 벡터와 행렬이 만드는 scalar다. 여기서는
+  방향별 scale을 반영한 거리 제곱을 표현한다.
+- **Eigenpair:** $\Sigma q_i=\lambda_iq_i$. 대칭 covariance에서는 orthonormal
+  eigenvector를 고를 수 있고, $\lambda_i$는 그 주축 방향의 variance다.
+- **Determinant와 log-determinant:** $|\Sigma|$는 전체 부피 scale을,
+  $\log|\Sigma|$는 그 scale의 자연로그를 나타낸다.
+- **Linear solve:** $Az=b$의 $z$가 필요할 때 inverse 전체를 만들지 않고
+  `np.linalg.solve(A, b)`를 사용한다.
 
-특정 항목만 막히면 [vector/matrix](../../concepts/vector_matrix.md),
+정의가 낯설면 [vector/matrix](../../concepts/vector_matrix.md),
 [linear system](../../concepts/linear_system.md),
-[S09 covariance](../S09/PROBLEM.md#사용할-정의)의 해당 부분만 복습한다.
+[S09 covariance](../S09/PROBLEM.md#사용할-정의)를 필요한 부분만 복습한다.
+Jacobian과 density change-of-variables는 선수지식으로 가정하지 않으며, 아래의
+guided optional deep dive에서 처음부터 정의한다.
 
 ## 교재 연결
 
+- 정렬 상태: `inferred`
+- 확인 근거: 저장소에는 MLAPP Ch. 4라는 주제 인용만 있고 원문·공식 발췌·
+  상세한 Ch. 4 학습 노트는 없다.
 - Kevin P. Murphy, *Machine Learning: A Probabilistic Perspective* (2012), Ch. 4
 - 주제: multivariate Gaussian density, Mahalanobis distance, covariance geometry
-- 이 세션은 교재의 수학적 관점을 한 개의 2D 사례와 안정적 NumPy 구현에 연결한다.
+- 따라서 이 세션은 정확한 원문 재현이 아니라 `MLAPP-style probabilistic depth`로
+  한 개의 2D 사례와 안정적 NumPy 구현을 연결한다.
 
 ## 모델과 가정
 
@@ -63,49 +79,27 @@ singular한 covariance는 더 낮은 차원의 부분공간에 놓인 별도 분
 
 ## 사용할 정의
 
-### 1. Affine transform과 density 유도
+### 1. Core에서 주어진 Gaussian density
 
-표준 Gaussian $z\sim\mathcal N(0,I_D)$와 invertible matrix $L$에 대해
-
-$$
-x=\mu+Lz,\qquad \Sigma=LL^T
-$$
-
-로 둔다. 이 affine transform의 평균과 covariance는
-
-$$
-\mathbb E[x]=\mu,\qquad
-\operatorname{Cov}[x]=L\operatorname{Cov}[z]L^T=LL^T=\Sigma.
-$$
-
-역변환은 $z=L^{-1}(x-\mu)$이고, density는 change of variables에 의해
-
-$$
-p_x(x)=p_z\!\left(L^{-1}(x-\mu)\right)|\det L^{-1}|.
-$$
-
-여기서 $r=x-\mu$라 하면
-
-$$
-\|L^{-1}r\|_2^2
-=r^TL^{-T}L^{-1}r
-=r^T\Sigma^{-1}r,
-$$
-
-그리고 $\det\Sigma=\det(LL^T)=(\det L)^2$다. 따라서
+Core에서는 다음 식을 **주어진 결과**로 사용한다. Affine transform이나 Jacobian을
+이전에 배우지 않았어도 T1, T3–T6을 진행할 수 있다.
 
 $$
 p(x\mid\mu,\Sigma)
 =(2\pi)^{-D/2}|\Sigma|^{-1/2}
-\exp\!\left(-\frac12r^T\Sigma^{-1}r\right).
+\exp\!\left(-\frac12r^T\Sigma^{-1}r\right),
+\qquad r=x-\mu.
 $$
 
-로그를 취하면 실제 구현에 사용할 식을 얻는다.
+실제 구현에서는 underflow를 피하고 곱을 합으로 바꾸기 위해 log-density를 쓴다.
 
 $$
 \log p(x\mid\mu,\Sigma)
 =-\frac12\left[D\log(2\pi)+\log|\Sigma|+r^T\Sigma^{-1}r\right].
 $$
+
+이 식의 유도는 Core 회상·제출·채점 대상이 아니다. 유도가 궁금하면 D0에서
+change-of-variables 정의부터 안내받아 진행한다.
 
 ### 2. Mahalanobis quadratic form
 
@@ -224,7 +218,8 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
 
 ## 과제
 
-다음 T1–T6은 Core다. Deep dive는 Core를 마친 뒤 선택한다.
+T1, T3–T6은 Core다. 기존 T2의 Jacobian 유도는 필수 진도와 채점에서 제외하고
+D0 guided optional deep dive로 이동했다.
 
 ### T1. 실행 전 예측
 
@@ -233,15 +228,6 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
    수치 계산 전에 예측하고 근거를 적는다.
 3. **T1-3** 어느 observation의 log-density가 더 높은지 예측한다.
 4. **T1-4** `slogdet`의 sign과 그 근거를 SPD 성질로 설명한다.
-
-### T2. 유도 재구성
-
-1. **T2-1** $x=\mu+Lz$에서 change of variables를 적용해 정규화항의
-   $|\det L|^{-1}$를 얻는 과정을 자신의 식으로 다시 쓴다.
-2. **T2-2** $\|L^{-1}r\|^2=q(x)$와 $|\Sigma|=(\det L)^2$를 보여 최종
-   density 식으로 연결한다.
-3. **T2-3** SPD가 보장하는 성질 중 이번 density와 계산에 실제 사용되는 것을
-   세 가지 이상 골라 연결 관계를 설명한다.
 
 ### T3. 2D 손계산
 
@@ -275,13 +261,36 @@ solve, Cholesky, eigen 세 관점의 동치성을 확인한다.
 
 ### T6. 통합 설명
 
-1. **T6-1** affine transform → covariance → quadratic form → log-density를
-   하나의 흐름으로 설명한다.
+1. **T6-1** residual → linear solve → quadratic form → log-density를 하나의
+   흐름으로 설명한다.
 2. **T6-2** Euclidean distance와 Mahalanobis distance의 차이를 covariance
    ellipse의 방향과 축 길이로 설명한다.
 3. **T6-3** batch 계산의 모든 중간 shape과 관측별 reduction axis를 설명한다.
 
 ## Deep dive 과제
+
+### D0. Guided affine/Jacobian 유도 (선택·채점 제외)
+
+이 절에서 Jacobian과 density change-of-variables를 처음 배워도 된다. 혼자
+회상하는 과제가 아니며, Core 완료에 필요하지 않다.
+
+- **Jacobian:** 벡터함수 $g:\mathbb R^D\to\mathbb R^D$의 모든 편미분을 모은
+  행렬 $J_g$다. $|\det J_g|$는 작은 부피가 변환으로 얼마나 늘거나 줄어드는지
+  나타낸다.
+- **Density change-of-variables:** invertible transform $x=g(z)$에 대해
+  $p_x(x)=p_z(g^{-1}(x))|\det J_{g^{-1}}(x)|$다.
+
+표준 Gaussian $z\sim\mathcal N(0,I_D)$와 $x=\mu+Lz$, $\Sigma=LL^T$가
+주어졌다고 하자. 튜터와 다음 한 단계씩 진행한다.
+
+1. 역변환 $g^{-1}(x)$와 inverse Jacobian을 구한다.
+2. 이를 일반 change-of-variables 식에 대입한다.
+3. exponent의 norm을 $r=x-\mu$의 quadratic form으로 바꾼다.
+4. $\Sigma=LL^T$의 inverse·determinant 관계를 사용해 Core의 주어진 식과
+   연결한다.
+
+막히면 그 단계의 정의와 행렬 항등식을 먼저 설명받고 다시 진행한다. 완성 유도를
+외워서 제출할 필요는 없다.
 
 ### D1. Eigendecomposition과 주축
 
@@ -323,17 +332,18 @@ cd week3-machine-learning/curriculum/sessions/S10
 
 ## 제출물
 
-- `answers.md`: T1–T3, T5–T6의 식과 설명
+- `answers.md`: T1, T3, T5–T6의 식과 설명. 기존 T2 칸은 비워도 된다.
 - `starter.py`: T4 구현
 - 통과한 `test_contract.py`
-- 선택: D1–D4의 계산과 관찰
+- 선택: D0–D4의 guided 유도, 계산과 관찰
 
 ## 완료 기준
 
-- affine transform과 Jacobian에서 Gaussian density를 재구성할 수 있다.
+- 주어진 Gaussian log-density의 세 항과 SPD 가정의 역할을 설명한다.
 - SPD, eigen geometry, Mahalanobis term, determinant 정규화의 관계를 설명한다.
 - inverse 없이 `(N,)` batched log-density를 허용오차 안에서 계산한다.
 - `solve`/`slogdet` 선택을 shape뿐 아니라 수치 안정성 관점에서도 설명한다.
 
-Deep dive는 Core 완료 조건에 포함하지 않지만, 이후 PCA·whitening·Gaussian
-conditioning을 위한 선형대수 연결을 제공한다.
+Deep dive는 Core 완료 조건에 포함하지 않는다. D0는 선택적인 density 유도를,
+D1–D4는 이후 PCA·whitening·Gaussian conditioning을 위한 선형대수 연결을
+제공한다.
