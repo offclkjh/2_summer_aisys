@@ -93,3 +93,70 @@ S08–S12에서 다시 사용할 Gaussian 계산, MLE, covariance 내용을 세�
   shape, 예상 결과 shape를 먼저 적는 습관을 확인한다.
 - 튜터 채점에서는 명시적 요청 전까지 완성 코드나 직접 정답을 공개하지 않고,
   정오 판정과 단계적 힌트로 스스로 수정할 수 있게 한다.
+
+## S10 — Multivariate Gaussian 계산과 기하
+
+> 교재 정렬 상태: **inferred**
+>
+> MLAPP 원문과 직접 대조한 구성은 아니며, 표준적인 multivariate Gaussian
+> 내용을 확률과 선형대수 관점에서 정리한다.
+
+### `solve`와 `slogdet`
+
+- residual을 $r=x-\mu$라 하면 Mahalanobis squared는
+  $r^\top\Sigma^{-1}r$다. 역행렬을 직접 만들지 않고
+  $\Sigma u=r$을 `np.linalg.solve`로 푼 뒤 $r^\top u$를 계산한다.
+- `np.linalg.slogdet(Sigma)`는 `(sign, logabsdet)`를 반환한다. determinant를
+  먼저 계산한 뒤 log를 취하는 것보다 overflow와 underflow에 안전하다.
+- covariance가 SPD이면 모든 eigenvalue가 양수이므로 determinant도 양수이고
+  `sign`은 `+1`이다. `logabsdet`는 Gaussian이 차지하는 부피에 따른
+  normalization을, Mahalanobis squared는 mean에서 떨어진 정도를 나타낸다.
+
+### Covariance ellipse와 eigen geometry
+
+Covariance의 eigendecomposition을 $\Sigma=Q\Lambda Q^\top$라 쓰면 다음과
+같이 해석할 수 있다.
+
+- $Q$의 eigenvector는 covariance ellipse의 principal axis 방향이다.
+- eigenvalue $\lambda_i$는 해당 방향의 variance다.
+- $r^\top\Sigma^{-1}r=c$인 contour의 semiaxis 길이는
+  $\sqrt{c\lambda_i}$다.
+- covariance는 real symmetric matrix이므로 orthonormal eigenbasis를 선택할
+  수 있다.
+
+Principal coordinate $y=Q^\top r$는 residual을 회전할 뿐이다. 따라서
+기울어진 ellipse가 axis-aligned ellipse가 되지만 일반적으로 원이 되지는
+않는다. 여기에 축별 표준편차까지 제거한
+$z=\Lambda^{-1/2}y$가 whitened coordinate이며,
+$r^\top\Sigma^{-1}r=z^\top z$가 된다.
+
+### Cholesky factor $L$과 covariance $\Sigma$
+
+SPD covariance는 $\Sigma=LL^\top$로 분해할 수 있다.
+
+- $r=Lz$에서 $L$은 표준화된 좌표를 data residual로 보내며, $L^{-1}$은
+  residual을 whiten한다.
+- $L$의 scale은 standard deviation에 대응하지만 $\Sigma$의 scale은
+  variance에 대응한다. 따라서 unit sphere에 $\Sigma$를 직접 적용한 결과는
+  covariance ellipse 자체가 아니다.
+- Generic solve 경로는 $\Sigma u=r$을 풀고 $r^\top u$를 계산한다.
+  Cholesky 경로는 $Ly=r$을 풀고 $y^\top y$를 계산한다. 이때
+  $u=\Sigma^{-1}r$과 $y=L^{-1}r$은 서로 다른 vector다.
+- $|\det L|$은 $L$의 volume scale이고
+  $\det\Sigma=(\det L)^2$다. 따라서 Cholesky factor로 구한 log-determinant는
+  $2\sum_j\log L_{jj}$다.
+
+### `standard_api.py`의 검산 흐름
+
+`standard_api.py`는 같은 Mahalanobis squared를 세 경로로 계산한다.
+
+1. `solve` 경로는 covariance에 대해 모든 residual의 linear system을 풀고,
+   `np.einsum`으로 residual과 solution의 inner product를 줄인다.
+2. Cholesky 경로는 `np.linalg.cholesky`로 $L$을 구하고 residual을 whiten한
+   뒤 squared norm을 계산한다. diagonal을 사용한 log-determinant도
+   `slogdet` 결과와 비교한다.
+3. Eigen 경로는 `np.linalg.eigh`로 principal coordinates를 구한 뒤 각
+   squared coordinate를 해당 eigenvalue로 나눈다.
+
+세 결과는 `np.testing.assert_allclose`로 비교하며, 마지막에는
+`scipy.stats.multivariate_normal.logpdf`의 표준 구현도 함께 출력한다.
