@@ -146,17 +146,23 @@ SPD covariance는 $\Sigma=LL^\top$로 분해할 수 있다.
   $\det\Sigma=(\det L)^2$다. 따라서 Cholesky factor로 구한 log-determinant는
   $2\sum_j\log L_{jj}$다.
 
-### `standard_api.py`의 검산 흐름
+### 표준 NumPy/SciPy API
 
-`standard_api.py`는 같은 Mahalanobis squared를 세 경로로 계산한다.
-
-1. `solve` 경로는 covariance에 대해 모든 residual의 linear system을 풀고,
-   `np.einsum`으로 residual과 solution의 inner product를 줄인다.
-2. Cholesky 경로는 `np.linalg.cholesky`로 $L$을 구하고 residual을 whiten한
-   뒤 squared norm을 계산한다. diagonal을 사용한 log-determinant도
-   `slogdet` 결과와 비교한다.
-3. Eigen 경로는 `np.linalg.eigh`로 principal coordinates를 구한 뒤 각
-   squared coordinate를 해당 eigenvalue로 나눈다.
-
-세 결과는 `np.testing.assert_allclose`로 비교하며, 마지막에는
-`scipy.stats.multivariate_normal.logpdf`의 표준 구현도 함께 출력한다.
+- `np.linalg.solve(a, b)`: inverse를 명시적으로 만들지 않고 `a @ x = b`인
+  선형계의 해를 구한다. `b`에 여러 right-hand side를 열로 놓을 수 있다.
+- `np.linalg.slogdet(a)`: determinant의 부호 `sign`과
+  `log(abs(det(a)))`를 반환한다. Gaussian log-density에서는 SPD
+  covariance의 `sign` 검사와 log-determinant 계산에 쓴다.
+- `np.einsum("nd,nd->n", a, b)`: `(N,D)` 배치의 같은 행끼리 inner
+  product를 계산해 `(N,)`로 줄인다.
+- `np.linalg.cholesky(a)`: SPD 행렬의 lower-triangular factor를 구한다.
+  whitening과 Cholesky 기반 log-determinant를 살펴볼 때 사용한다.
+- `np.linalg.eigh(a)`: real symmetric 행렬의 eigenvalue와 orthonormal
+  eigenvector를 반환한다. covariance의 principal axis와 방향별
+  variance를 해석할 때 사용한다.
+- `np.linalg.cond(a)`: 행렬의 condition number를 구해 nearly singular한
+  covariance의 수치적 민감도를 진단한다.
+- `scipy.stats.multivariate_normal.logpdf(x, mean=..., cov=...)`: 직접 구현을
+  완성한 뒤 비교할 표준 multivariate Gaussian log-density다.
+- `np.testing.assert_allclose(actual, expected)`: floating-point 결과를 지정한
+  절대·상대 허용오차 안에서 비교한다.
